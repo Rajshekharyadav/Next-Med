@@ -14,30 +14,6 @@ import DoctorsSectionEnhanced from '@/components/home/DoctorsSectionEnhanced';
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-white shadow-md py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-primary">NextMed</h1>
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-700 hover:text-primary">Home</a>
-              <a href="#ai-diagnostics" className="text-gray-700 hover:text-primary">AI Diagnostics</a>
-              <a href="#health-records" className="text-gray-700 hover:text-primary">Health Records</a>
-              <a href="#doctors" className="text-gray-700 hover:text-primary">Doctors</a>
-              <a href="/about" className="text-gray-700 hover:text-primary">About</a>
-              <a href="/contact" className="text-gray-700 hover:text-primary">Contact</a>
-            </nav>
-            <div className="flex items-center space-x-4">
-              <button className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-600">
-                Book Appointment
-              </button>
-              <button className="border border-primary text-primary px-4 py-2 rounded hover:bg-blue-50">
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
@@ -51,12 +27,12 @@ export default function Home() {
                   Experience next-generation healthcare with AI-powered diagnostics, skin analysis, blood report interpretation, and personalized consultations - all from the comfort of your home.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-600">
+                  <Link href="/appointment" className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-600">
                     Book Appointment
-                  </button>
-                  <button className="bg-white text-primary border border-primary px-6 py-3 rounded font-medium hover:bg-gray-50">
+                  </Link>
+                  <Link href="#ai-diagnostics" className="bg-white text-primary border border-primary px-6 py-3 rounded font-medium hover:bg-gray-50">
                     Try AI Diagnosis
-                  </button>
+                  </Link>
                 </div>
               </div>
               <div className="bg-gradient-to-br from-blue-200 to-blue-300 h-96 rounded-lg flex items-center justify-center text-white">
@@ -149,4 +125,4 @@ export default function Home() {
       </footer>
     </div>
   );
-} 
+}

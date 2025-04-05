@@ -1,4 +1,6 @@
 import './globals.css';
+import { AuthProvider } from './context/AuthContext';
+import Header from '@/components/layout/Header';
 
 export const metadata = {
   title: 'NextMed - Advanced Healthcare Solutions',
@@ -13,7 +15,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-background">
-        {children}
+        <AuthProvider>
+          <Header />
+          <main>
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -6,18 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check-mongodb": "node scripts/check-mongodb.js",
+    "setup-mongodb": "node scripts/setup-local-mongodb.js",
+    "setup-and-start": "node scripts/check-mongodb.js && node scripts/setup-local-mongodb.js && next dev"
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@types/react-slick": "^0.23.13",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.5",
+    "bcryptjs": "^3.0.2",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
     "framer-motion": "^10.18.0",
+    "mongodb": "^6.15.0",
+    "mongodb-uri": "^0.9.7",
     "mongoose": "^8.1.0",
     "next": "14.1.0",
     "postcss": "^8.4.33",
@@ -29,5 +36,17 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }

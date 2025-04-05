@@ -1,18 +1,33 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// Define protected routes that require authentication
+const protectedRoutes = [
+  '/health-records',
+  '/appointments',
+  '/profile',
+  '/api/medical-records',
+];
+
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  // For now, we'll just pass through all requests
-  // In the future, we can add authentication checks here
+  const path = request.nextUrl.pathname;
   
-  // Example: Check if the user is authenticated for protected routes
-  // const isAuthenticated = request.cookies.has('auth-token');
-  // const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');
+  // Check if this is a protected route
+  const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route));
   
-  // if (isProtectedRoute && !isAuthenticated) {
-  //   return NextResponse.redirect(new URL('/login', request.url));
-  // }
+  if (isProtectedRoute) {
+    // Check if the user is authenticated
+    const authToken = request.cookies.get('auth-token');
+    const userCookie = request.cookies.get('user');
+    
+    if (!authToken || !userCookie) {
+      // Redirect to login if not authenticated
+      const url = new URL('/login', request.url);
+      url.searchParams.set('from', path);
+      return NextResponse.redirect(url);
+    }
+  }
   
   return NextResponse.next();
 }
