@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi';
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaUpload, FaCheckCircle, FaSpinner } from 'react-icons/fa';

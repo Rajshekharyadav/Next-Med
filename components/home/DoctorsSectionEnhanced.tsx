@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCalendarAlt, FaClock, FaVideo, FaUser, FaSpinner, FaCalendarCheck } from 'react-icons/fa';

@@ -1,3 +1,5 @@
+"use client";
+
 import { FiUsers, FiCalendar, FiVideo, FiFileText, FiClock, FiAward } from 'react-icons/fi';
 
 const features = [
