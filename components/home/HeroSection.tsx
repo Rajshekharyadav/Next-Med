@@ -7,19 +7,32 @@ const HeroSection = () => {
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="max-w-xl">
+            <div className="mb-6 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+              <img 
+                src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                alt="Gemini" 
+                className="h-4 w-4 mr-2"
+              />
+              <span>New: AI Symptom Analysis with Gemini</span>
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-text-dark leading-tight mb-6">
               Advanced Healthcare for a{' '}
               <span className="text-primary">Better Life</span>
             </h1>
             <p className="text-lg text-text-light mb-8">
-              Connect with top-rated doctors, book appointments, and get expert medical advice from the comfort of your home. NextMed is revolutionizing healthcare access.
+              Connect with top-rated doctors, book appointments, and get expert medical advice from the comfort of your home. NextMed is revolutionizing healthcare access with AI-powered diagnostics.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/appointment" className="btn-primary flex items-center justify-center gap-2">
                 Book Appointment
               </Link>
-              <Link href="/consultation" className="btn-secondary flex items-center justify-center gap-2">
-                Video Consultation
+              <Link href="/ai-diagnosis" className="btn-secondary flex items-center justify-center gap-2">
+                <img 
+                  src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                  alt="Gemini" 
+                  className="h-4 w-4 mr-1"
+                />
+                Try AI Diagnosis
               </Link>
             </div>
             <div className="mt-10 flex items-center">

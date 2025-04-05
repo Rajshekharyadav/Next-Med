@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiLogOut, FiActivity } from 'react-icons/fi';
 import { useAuth } from '@/app/context/AuthContext';
 
 const Header = () => {
@@ -79,6 +79,20 @@ const Header = () => {
                       onClick={() => setIsProfileDropdownOpen(false)}
                     >
                       <FiUser className="mr-2" /> My Profile
+                    </Link>
+                    <Link 
+                      href="/dashboard" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                    >
+                      <FiActivity className="mr-2" /> Health Dashboard
+                    </Link>
+                    <Link 
+                      href="/ai-diagnosis" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      onClick={() => setIsProfileDropdownOpen(false)}
+                    >
+                      <FiActivity className="mr-2" /> AI Symptom Analysis
                     </Link>
                     <Link 
                       href="/health-records" 
@@ -160,6 +174,20 @@ const Header = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <FiUser className="mr-2" /> My Profile
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center px-2 py-1 text-text-dark hover:text-primary"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <FiActivity className="mr-2" /> Health Dashboard
+                    </Link>
+                    <Link
+                      href="/ai-diagnosis"
+                      className="flex items-center px-2 py-1 text-text-dark hover:text-primary"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <FiActivity className="mr-2" /> AI Symptom Analysis
                     </Link>
                     <Link
                       href="/health-records"

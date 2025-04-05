@@ -1,100 +1,79 @@
-# NextMed - Advanced Healthcare Platform with AI Integration
+# NextMed - Advanced Healthcare Platform
 
-NextMed is a modern healthcare platform that combines traditional healthcare services with cutting-edge AI diagnostics, telemedicine, and health record management. This project demonstrates a fully functional frontend with API integrations.
+NextMed is a comprehensive healthcare platform that connects patients with healthcare providers, facilitates appointment booking, tracks health records, and now provides AI-powered symptom analysis.
 
 ## Features
 
-### AI Diagnostic Services
-- **Skin Vision (AI Skin Analysis)**: Upload skin photos and receive AI-powered analysis and recommendations for skin conditions
-- **Blood Report Analysis**: Upload blood test reports and get detailed interpretations in plain language
-- **General AI Diagnosis**: Describe symptoms and receive preliminary diagnoses with recommended actions
+- User authentication and profile management
+- Appointment scheduling with healthcare providers
+- Health records management
+- AI-powered symptom analysis and condition prediction using Google's Gemini API
+- Responsive design for desktop and mobile devices
 
-### Health Records Management
-- Securely store and access all your medical documents in one place
-- Interactive health dashboard showing medical records, prescriptions, and vaccination history
-- File upload system for adding new health records
-- View history and details of past medical records
+## New Feature: AI Symptom Analysis with Gemini
 
-### Doctor Consultations
-- Browse and filter available doctors by specialty
-- Real-time available appointment slot viewing
-- Appointment booking system for both video and in-person consultations
-- Doctor profiles with education, specialties, ratings, and availability
+The AI Symptom Analysis feature allows users to:
 
-### Responsive UI
-- Modern, responsive design created with Tailwind CSS
-- Smooth animations and transitions using Framer Motion
-- Interactive UI elements for enhanced user experience
-- Support for all device sizes from mobile to desktop
+1. Select from common symptoms or add custom symptoms
+2. Provide additional context about their condition
+3. Receive AI-powered analysis of possible conditions using Google's Gemini AI
+4. Get recommendations for next steps
+5. Book appointments with relevant specialists based on the analysis
 
-## Backend APIs (Mock Implementation)
+### How It Works
 
-The project includes several mock API routes to simulate a fully functional backend:
+The AI Symptom Analysis uses Google's Gemini AI to analyze the symptoms provided by the user and generate insights about possible conditions. The system:
 
-- `/api/diagnostics/skin-analysis`: Processes skin images and returns analysis
-- `/api/diagnostics/blood-analysis`: Analyzes blood reports and provides interpretations
-- `/api/diagnostics/symptom-analysis`: Processes text descriptions of symptoms for AI diagnosis
-- `/api/health-records/upload`: Handles file uploads for health records
-- `/api/doctors/list`: Returns lists of available doctors with filtering options
-- `/api/appointments/book`: Handles appointment bookings
+- Analyzes the combination of symptoms
+- Considers symptom severity and duration
+- Matches patterns against a medical knowledge base
+- Provides probability-based predictions of possible conditions
+- Suggests appropriate next steps for the user
 
-## Technologies Used
+### Important Disclaimer
 
-- **Next.js**: React framework for server-rendered React applications
-- **React**: JavaScript library for building user interfaces
-- **TypeScript**: Typed superset of JavaScript for better code quality
-- **Tailwind CSS**: Utility-first CSS framework
-- **Framer Motion**: Animation library for React
-- **React Icons**: Icon library for React applications
-- **API Routes**: Next.js API routes for backend functionality
+The AI Symptom Analysis is for informational purposes only and does not constitute professional medical advice, diagnosis, or treatment. Always seek the advice of qualified healthcare providers with any questions you may have regarding a medical condition.
 
-## Getting Started
+## Environment Setup
 
-### Prerequisites
+To run this application, you need to set up the following environment variables in a `.env.local` file:
 
-- Node.js (v14 or later)
-- npm or yarn
+```
+# MongoDB Connection
+MONGODB_URI=your_mongodb_connection_string
 
-### Installation
+# Authentication
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_random_secret_key
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/next-med.git
-cd next-med
+# Google Gemini API
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
+To obtain a Gemini API key, visit [Google AI Studio](https://aistudio.google.com/) and create an API key in your account.
+
+## Installation
+
+1. Clone the repository
 2. Install dependencies:
-```bash
-npm install
-# or
-yarn install
-```
+   ```
+   npm install
+   ```
+3. Set up environment variables as described above
+4. Run the development server:
+   ```
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-3. Run the development server:
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Technology Stack
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-- `/app`: Next.js app directory with page components and routes
-- `/components`: Reusable React components
-- `/components/home`: Home page specific components
-- `/components/layout`: Layout components like header and footer
-- `/app/api`: API routes for backend functionality
-- `/public`: Static assets like images
-
-## Future Enhancements
-
-- User authentication and authorization
-- Integration with real AI models for diagnostics
-- Real-time video consultation capabilities
-- Mobile application using React Native
-- Integration with real EHR (Electronic Health Records) systems
+- Next.js (App Router)
+- TypeScript
+- MongoDB
+- Tailwind CSS
+- Google Gemini AI API
+- NextAuth.js for authentication
 
 ## License
 

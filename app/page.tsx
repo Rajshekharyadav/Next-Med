@@ -10,6 +10,7 @@ import BlogPreview from '@/components/home/BlogPreview';
 import AIDiagnosticsSection from '@/components/home/AIDiagnosticsSection';
 import HealthRecordsSection from '@/components/home/HealthRecordsSection';
 import DoctorsSectionEnhanced from '@/components/home/DoctorsSectionEnhanced';
+import GeminiFeatureSection from '@/components/home/GeminiFeatureSection';
 
 export default function Home() {
   return (
@@ -30,8 +31,13 @@ export default function Home() {
                   <Link href="/appointment" className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-600">
                     Book Appointment
                   </Link>
-                  <Link href="#ai-diagnostics" className="bg-white text-primary border border-primary px-6 py-3 rounded font-medium hover:bg-gray-50">
-                    Try AI Diagnosis
+                  <Link href="/ai-diagnosis" className="bg-white text-primary border border-primary px-6 py-3 rounded font-medium hover:bg-gray-50 flex items-center justify-center">
+                    <img 
+                      src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                      alt="Gemini AI" 
+                      className="h-5 w-5 mr-2"
+                    />
+                    Try AI Diagnosis with Gemini
                   </Link>
                 </div>
               </div>
@@ -41,6 +47,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Gemini AI Feature Section */}
+        <GeminiFeatureSection />
 
         {/* AI Diagnostics Section */}
         <AIDiagnosticsSection />
@@ -93,6 +102,7 @@ export default function Home() {
               <h3 className="text-xl font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
+                <li><a href="/ai-diagnosis" className="text-gray-300 hover:text-white">AI Diagnosis with Gemini</a></li>
                 <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">AI Diagnostics</a></li>
                 <li><a href="#doctors" className="text-gray-300 hover:text-white">Our Doctors</a></li>
                 <li><a href="#health-records" className="text-gray-300 hover:text-white">Health Records</a></li>
@@ -101,6 +111,7 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-bold mb-4">Our Services</h3>
               <ul className="space-y-2">
+                <li><a href="/ai-diagnosis" className="text-gray-300 hover:text-white">AI Symptom Analysis with Gemini</a></li>
                 <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">AI Skin Analysis</a></li>
                 <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">Blood Report Analysis</a></li>
                 <li><a href="#doctors" className="text-gray-300 hover:text-white">Doctor Consultations</a></li>

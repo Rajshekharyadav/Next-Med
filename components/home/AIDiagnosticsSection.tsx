@@ -208,10 +208,36 @@ const AIDiagnosticsSection = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-gray-600"
+            className="text-lg text-gray-600 mb-6"
           >
             Leverage cutting-edge artificial intelligence for fast, accurate, and convenient health assessments without leaving your home.
           </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-blue-50 border border-blue-200 p-4 rounded-lg inline-block mx-auto"
+          >
+            <div className="flex items-center justify-center">
+              <img 
+                src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                alt="Google Gemini Logo" 
+                className="h-6 w-6 mr-3"
+              />
+              <span className="font-medium text-blue-800">New!</span>
+              <span className="mx-2 text-gray-700">Try our advanced</span>
+              <a 
+                href="/ai-diagnosis" 
+                className="text-primary font-bold hover:underline flex items-center"
+              >
+                AI Symptom Analysis with Gemini
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
