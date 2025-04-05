@@ -11,6 +11,7 @@ import AIDiagnosticsSection from '@/components/home/AIDiagnosticsSection';
 import HealthRecordsSection from '@/components/home/HealthRecordsSection';
 import DoctorsSectionEnhanced from '@/components/home/DoctorsSectionEnhanced';
 import GeminiFeatureSection from '@/components/home/GeminiFeatureSection';
+import BloodReportFeatureSection from '@/components/home/BloodReportFeatureSection';
 
 export default function Home() {
   return (
@@ -40,6 +41,14 @@ export default function Home() {
                     Try AI Diagnosis with Gemini
                   </Link>
                 </div>
+                <div className="mt-4">
+                  <Link href="/blood-report-analysis" className="text-indigo-600 font-medium hover:text-indigo-800 flex items-center">
+                    <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    Analyze Your Blood Report
+                  </Link>
+                </div>
               </div>
               <div className="bg-gradient-to-br from-blue-200 to-blue-300 h-96 rounded-lg flex items-center justify-center text-white">
                 AI-Powered Healthcare Illustration
@@ -50,6 +59,9 @@ export default function Home() {
 
         {/* Gemini AI Feature Section */}
         <GeminiFeatureSection />
+
+        {/* Blood Report Analysis Feature Section */}
+        <BloodReportFeatureSection />
 
         {/* AI Diagnostics Section */}
         <AIDiagnosticsSection />
@@ -103,7 +115,7 @@ export default function Home() {
               <ul className="space-y-2">
                 <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
                 <li><a href="/ai-diagnosis" className="text-gray-300 hover:text-white">AI Diagnosis with Gemini</a></li>
-                <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">AI Diagnostics</a></li>
+                <li><a href="/blood-report-analysis" className="text-gray-300 hover:text-white">Blood Report Analysis</a></li>
                 <li><a href="#doctors" className="text-gray-300 hover:text-white">Our Doctors</a></li>
                 <li><a href="#health-records" className="text-gray-300 hover:text-white">Health Records</a></li>
               </ul>
@@ -113,7 +125,7 @@ export default function Home() {
               <ul className="space-y-2">
                 <li><a href="/ai-diagnosis" className="text-gray-300 hover:text-white">AI Symptom Analysis with Gemini</a></li>
                 <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">AI Skin Analysis</a></li>
-                <li><a href="#ai-diagnostics" className="text-gray-300 hover:text-white">Blood Report Analysis</a></li>
+                <li><a href="/blood-report-analysis" className="text-gray-300 hover:text-white">Blood Report Analysis</a></li>
                 <li><a href="#doctors" className="text-gray-300 hover:text-white">Doctor Consultations</a></li>
                 <li><a href="#health-records" className="text-gray-300 hover:text-white">Health Record Management</a></li>
                 <li><a href="#doctors" className="text-gray-300 hover:text-white">Prescription Services</a></li>
