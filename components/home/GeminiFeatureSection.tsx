@@ -19,7 +19,7 @@ const GeminiFeatureSection = () => {
             >
               <div className="flex items-center mb-4">
                 <img 
-                  src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" 
                   alt="Google Gemini Logo" 
                   className="h-8 w-8 mr-3"
                 />

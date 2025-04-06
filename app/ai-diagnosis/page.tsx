@@ -188,7 +188,7 @@ export default function AIDiagnosisPage() {
         >
           <div className="flex items-center justify-center mb-4">
             <img 
-              src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+              src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" 
               alt="Google Gemini Logo" 
               className="h-10 w-10 mr-3"
             />
@@ -216,7 +216,7 @@ export default function AIDiagnosisPage() {
             <div className="mb-8 bg-blue-50 rounded-lg p-4 border border-blue-100">
               <div className="flex items-center">
                 <img 
-                  src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                  src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" 
                   alt="Google Gemini Logo" 
                   className="h-6 w-6 mr-3"
                 />

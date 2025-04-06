@@ -909,7 +909,7 @@ export default function BloodReportAnalysisPage() {
                   </div>
                 </div>
 
-                <div className="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-200">
+                {/* <div className="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-200">
                   <div className="flex items-start">
                     <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
                     <div>
@@ -926,7 +926,7 @@ export default function BloodReportAnalysisPage() {
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div 
                   className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${
