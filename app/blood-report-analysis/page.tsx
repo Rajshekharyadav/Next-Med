@@ -309,6 +309,8 @@ export default function BloodReportAnalysisPage() {
     visualization: true
   });
   const [healthScore, setHealthScore] = useState<number>(0);
+  const [processingStage, setProcessingStage] = useState<string>('');
+  const [processingProgress, setProcessingProgress] = useState<number>(0);
 
   // Add chart registration
   useEffect(() => {
@@ -396,6 +398,393 @@ export default function BloodReportAnalysisPage() {
     }));
   };
 
+  // Helper function to parse blood report data (simulated)
+  const parseBloodReport = async (file: File): Promise<any> => {
+    // This function simulates extracting text from a PDF and parsing blood test values
+    // In a real implementation, you would use a PDF parsing library like pdf.js
+    
+    console.log('Parsing blood report:', file.name);
+    
+    // Simulate PDF reading process with a loading delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // STEP 1: Simulate extracting raw text from the PDF
+    // This would normally be done with a PDF parsing library
+    const simulateExtractedText = () => {
+      // Different simulated text based on filename to demonstrate different reports
+      if (file.name.toLowerCase().includes('anemia')) {
+        return `
+          PATIENT: John Doe
+          DATE: ${new Date().toLocaleDateString()}
+          
+          COMPLETE BLOOD COUNT
+          Hemoglobin: 10.5 g/dL (13.5-17.5)
+          Red Blood Cells: 4.1 x10^12/L (4.5-5.5)
+          Hematocrit: 32% (38.8-50)
+          MCV: 78 fL (80-100)
+          MCH: 25.6 pg (27-33)
+          Platelets: 245 x10^9/L (150-450)
+          White Blood Cells: 7.2 x10^9/L (4.5-11.0)
+          
+          METABOLIC PANEL
+          Cholesterol: 195 mg/dL (<200)
+          Glucose: 88 mg/dL (70-99)
+        `;
+      } else if (file.name.toLowerCase().includes('cholesterol') || file.name.toLowerCase().includes('lipid')) {
+        return `
+          PATIENT: Jane Smith
+          DATE: ${new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+          
+          LIPID PANEL
+          Cholesterol (Total): 245 mg/dL (<200)
+          LDL Cholesterol: 162 mg/dL (<100)
+          HDL Cholesterol: 48 mg/dL (>40)
+          Triglycerides: 180 mg/dL (<150)
+          
+          COMPLETE BLOOD COUNT
+          Hemoglobin: 14.2 g/dL (13.5-17.5)
+          Red Blood Cells: 5.1 x10^12/L (4.5-5.5)
+          Hematocrit: 42% (38.8-50)
+          White Blood Cells: 6.8 x10^9/L (4.5-11.0)
+          Platelets: 260 x10^9/L (150-450)
+          
+          METABOLIC PANEL
+          Glucose (Fasting): 92 mg/dL (70-99)
+        `;
+      } else {
+        return `
+          PATIENT: ${file.name.split('.')[0] || 'Patient'}
+          DATE: ${new Date().toLocaleDateString()}
+          
+          COMPLETE BLOOD COUNT
+          Hemoglobin: 13.2 g/dL (13.5-17.5)
+          Red Blood Cells: 4.9 x10^12/L (4.5-5.5)
+          Hematocrit: 39% (38.8-50)
+          MCV: 82 fL (80-100)
+          MCH: 27 pg (27-33)
+          Platelets: 250 x10^9/L (150-450)
+          White Blood Cells: 7.5 x10^9/L (4.5-11.0)
+          Neutrophils: 60% (40-75)
+          Lymphocytes: 30% (20-45)
+          Monocytes: 7% (2-10)
+          Eosinophils: 2% (0-6)
+          Basophils: 1% (0-2)
+          
+          LIPID PANEL
+          Cholesterol (Total): 210 mg/dL (<200)
+          LDL Cholesterol: 130 mg/dL (<100)
+          HDL Cholesterol: 55 mg/dL (>40)
+          Triglycerides: 150 mg/dL (<150)
+          
+          METABOLIC PANEL
+          Glucose (Fasting): 95 mg/dL (70-99)
+          Creatinine: 0.9 mg/dL (0.7-1.3)
+          Urea: 15 mg/dL (7-20)
+          Uric Acid: 5.5 mg/dL (3.5-7.2)
+          Total Protein: 7.2 g/dL (6.4-8.3)
+          Albumin: 4.5 g/dL (3.5-5.0)
+          Bilirubin: 0.8 mg/dL (0.3-1.2)
+          ALT: 25 U/L (0-35)
+          AST: 22 U/L (0-35)
+          Alkaline Phosphatase: 70 U/L (30-120)
+          
+          ELECTROLYTES
+          Sodium: 140 mmol/L (135-145)
+          Potassium: 4.2 mmol/L (3.5-5.1)
+          Chloride: 102 mmol/L (96-106)
+          Calcium: 9.5 mg/dL (8.5-10.5)
+          
+          IRON STUDIES
+          Iron: 80 μg/dL (60-170)
+          Ferritin: 100 ng/mL (30-400)
+        `;
+      }
+    };
+    
+    // Get the simulated extracted text
+    const extractedText = simulateExtractedText();
+    console.log('Extracted text from PDF:', extractedText.substring(0, 100) + '...');
+    
+    // STEP 2: Parse the extracted text to find blood test values
+    // This uses regex patterns to find test names, values, and reference ranges
+    const parseExtractedText = (text: string) => {
+      const parsedData: {[key: string]: string} = {};
+      const patientInfo: {name?: string, date?: string} = {};
+      
+      // Extract patient name and date
+      const patientMatch = text.match(/PATIENT:\s*([^\n]+)/);
+      if (patientMatch && patientMatch[1]) {
+        patientInfo.name = patientMatch[1].trim();
+      }
+      
+      const dateMatch = text.match(/DATE:\s*([^\n]+)/);
+      if (dateMatch && dateMatch[1]) {
+        patientInfo.date = dateMatch[1].trim();
+      }
+      
+      // Regex pattern to match test name, value, and reference range
+      // Format: TestName: Value Unit (Min-Max)
+      const testPattern = /([^:\n]+):\s*([\d.]+)\s*([^\s\(]+)\s*\(([^)]+)\)/g;
+      let match;
+      
+      while ((match = testPattern.exec(text)) !== null) {
+        const [_, testName, value, unit, referenceRange] = match;
+        const normalizedName = testName.trim().toLowerCase().replace(/\s+/g, '');
+        parsedData[normalizedName] = `${value} ${unit}`;
+      }
+      
+      // Special case for tests with different formats (e.g., < value)
+      const specialTestPattern = /([^:\n]+):\s*([\d.]+)\s*([^\s\(]+)\s*\(<\s*([\d.]+)\)/g;
+      while ((match = specialTestPattern.exec(text)) !== null) {
+        const [_, testName, value, unit, maxValue] = match;
+        const normalizedName = testName.trim().toLowerCase().replace(/\s+/g, '');
+        parsedData[normalizedName] = `${value} ${unit}`;
+      }
+      
+      return { parsedData, patientInfo };
+    };
+    
+    // Parse the text to get structured data
+    const { parsedData, patientInfo } = parseExtractedText(extractedText);
+    
+    // Map the normalized keys to our standard keys for analysis
+    const standardizedData: {[key: string]: string} = {};
+    const keyMapping: {[key: string]: string} = {
+      'hemoglobin': 'hemoglobin',
+      'redbloodcells': 'redBloodCells',
+      'hematocrit': 'hematocrit',
+      'mcv': 'mcv',
+      'mch': 'mch',
+      'platelets': 'platelets',
+      'whitebloodcells': 'whiteBloodCells',
+      'neutrophils': 'neutrophils',
+      'lymphocytes': 'lymphocytes',
+      'monocytes': 'monocytes',
+      'eosinophils': 'eosinophils',
+      'basophils': 'basophils',
+      'cholesterol(total)': 'cholesterol',
+      'cholesterol': 'cholesterol',
+      'ldlcholesterol': 'ldl',
+      'hdlcholesterol': 'hdl',
+      'triglycerides': 'triglycerides',
+      'glucose(fasting)': 'glucose',
+      'glucose': 'glucose',
+      'creatinine': 'creatinine',
+      'urea': 'urea',
+      'uricacid': 'uricAcid',
+      'totalprotein': 'totalProtein',
+      'albumin': 'albumin',
+      'bilirubin': 'bilirubin',
+      'alt': 'alt',
+      'ast': 'ast',
+      'alkalinephosphatase': 'alp',
+      'sodium': 'sodium',
+      'potassium': 'potassium',
+      'chloride': 'chloride',
+      'calcium': 'calcium',
+      'iron': 'iron',
+      'ferritin': 'ferritin'
+    };
+    
+    // Map the parsed data to our standard keys
+    Object.entries(parsedData).forEach(([key, value]) => {
+      if (keyMapping[key]) {
+        standardizedData[keyMapping[key]] = value;
+      }
+    });
+    
+    console.log('Standardized data:', standardizedData);
+    
+    return {
+      parsedData: standardizedData,
+      reportDate: patientInfo.date || new Date().toISOString().split('T')[0],
+      patientName: patientInfo.name
+    };
+  };
+
+  // Function to analyze blood test values and generate recommendations
+  const analyzeBloodValues = (parsedData: any) => {
+    const abnormalValues: any[] = [];
+    const normalValues: any[] = [];
+    const healthInsights: string[] = [];
+    const nutritionAdvice: string[] = [];
+    const lifestyleRecommendations: string[] = [];
+    
+    // Reference ranges - these would normally come from a medical database
+    const referenceRanges: { [key: string]: { min: number; max: number; unit: string; description: string } } = {
+      hemoglobin: { min: 13.5, max: 17.5, unit: 'g/dL', description: 'Hemoglobin' },
+      redBloodCells: { min: 4.5, max: 5.5, unit: 'x10^12/L', description: 'Red Blood Cells' },
+      hematocrit: { min: 38.8, max: 50, unit: '%', description: 'Hematocrit' },
+      mcv: { min: 80, max: 100, unit: 'fL', description: 'Mean Corpuscular Volume' },
+      mch: { min: 27, max: 33, unit: 'pg', description: 'Mean Corpuscular Hemoglobin' },
+      platelets: { min: 150, max: 450, unit: 'x10^9/L', description: 'Platelets' },
+      whiteBloodCells: { min: 4.5, max: 11.0, unit: 'x10^9/L', description: 'White Blood Cells' },
+      neutrophils: { min: 40, max: 75, unit: '%', description: 'Neutrophils' },
+      lymphocytes: { min: 20, max: 45, unit: '%', description: 'Lymphocytes' },
+      monocytes: { min: 2, max: 10, unit: '%', description: 'Monocytes' },
+      eosinophils: { min: 0, max: 6, unit: '%', description: 'Eosinophils' },
+      basophils: { min: 0, max: 2, unit: '%', description: 'Basophils' },
+      cholesterol: { min: 0, max: 200, unit: 'mg/dL', description: 'Total Cholesterol' },
+      ldl: { min: 0, max: 100, unit: 'mg/dL', description: 'LDL Cholesterol' },
+      hdl: { min: 40, max: 60, unit: 'mg/dL', description: 'HDL Cholesterol' },
+      triglycerides: { min: 0, max: 150, unit: 'mg/dL', description: 'Triglycerides' },
+      glucose: { min: 70, max: 99, unit: 'mg/dL', description: 'Glucose (Fasting)' },
+      creatinine: { min: 0.7, max: 1.3, unit: 'mg/dL', description: 'Creatinine' },
+      urea: { min: 7, max: 20, unit: 'mg/dL', description: 'Urea' },
+      uricAcid: { min: 3.5, max: 7.2, unit: 'mg/dL', description: 'Uric Acid' },
+      totalProtein: { min: 6.4, max: 8.3, unit: 'g/dL', description: 'Total Protein' },
+      albumin: { min: 3.5, max: 5.0, unit: 'g/dL', description: 'Albumin' },
+      bilirubin: { min: 0.3, max: 1.2, unit: 'mg/dL', description: 'Total Bilirubin' },
+      alt: { min: 0, max: 35, unit: 'U/L', description: 'ALT' },
+      ast: { min: 0, max: 35, unit: 'U/L', description: 'AST' },
+      alp: { min: 30, max: 120, unit: 'U/L', description: 'Alkaline Phosphatase' },
+      sodium: { min: 135, max: 145, unit: 'mmol/L', description: 'Sodium' },
+      potassium: { min: 3.5, max: 5.1, unit: 'mmol/L', description: 'Potassium' },
+      chloride: { min: 96, max: 106, unit: 'mmol/L', description: 'Chloride' },
+      calcium: { min: 8.5, max: 10.5, unit: 'mg/dL', description: 'Calcium' },
+      iron: { min: 60, max: 170, unit: 'μg/dL', description: 'Iron' },
+      ferritin: { min: 30, max: 400, unit: 'ng/mL', description: 'Ferritin' }
+    };
+
+    // Check each value against reference ranges
+    Object.entries(parsedData).forEach(([key, value]) => {
+      if (referenceRanges[key]) {
+        const range = referenceRanges[key];
+        const numericValue = parseFloat(String(value).replace(/[^\d.-]/g, ''));
+        const referenceRangeStr = `${range.min}-${range.max} ${range.unit}`;
+        const valueWithUnit = `${numericValue} ${range.unit}`;
+        
+        if (numericValue < range.min || numericValue > range.max) {
+          // Determine severity
+          let severity = 'Mild';
+          let interpretation = '';
+          let recommendation = '';
+          
+          // Logic for determining severity based on how far outside range
+          const percentageOutside = numericValue < range.min 
+            ? (range.min - numericValue) / range.min * 100 
+            : (numericValue - range.max) / range.max * 100;
+          
+          if (percentageOutside > 30) {
+            severity = 'Severe';
+          } else if (percentageOutside > 15) {
+            severity = 'Moderate';
+          }
+          
+          // Specific interpretations and recommendations based on test
+          switch (key) {
+            case 'hemoglobin':
+              if (numericValue < range.min) {
+                interpretation = `Below normal range, indicating possible ${severity.toLowerCase()} anemia. This can cause fatigue, weakness, and reduced oxygen transport to tissues.`;
+                recommendation = 'Consider increasing iron-rich foods in your diet such as red meat, spinach, beans, and fortified cereals. Vitamin C can help with iron absorption.';
+                
+                healthInsights.push('Your hemoglobin levels indicate anemia, which may cause fatigue and weakness');
+                nutritionAdvice.push('Increase iron-rich foods like lean red meat, beans, and leafy greens to address anemia');
+                nutritionAdvice.push('Include vitamin C sources with iron-rich foods to improve absorption');
+                lifestyleRecommendations.push('Consider talking to your doctor about iron supplementation if dietary changes don\'t help');
+              } else {
+                interpretation = `Above normal range, which could indicate polycythemia or dehydration.`;
+                recommendation = 'Ensure you stay well-hydrated and consult with your doctor to rule out underlying conditions.';
+                
+                healthInsights.push('Your elevated hemoglobin levels may be due to dehydration or other conditions');
+                nutritionAdvice.push('Increase your daily water intake to maintain proper hydration');
+              }
+              break;
+              
+            case 'cholesterol':
+              if (numericValue > range.max) {
+                interpretation = `Above normal range, indicating high cholesterol. This increases your risk of heart disease and stroke.`;
+                recommendation = 'Focus on a heart-healthy diet low in saturated fats. Regular exercise and weight management can help. Discuss with your doctor if medication might be necessary.';
+                
+                healthInsights.push('Your cholesterol levels are elevated, which increases risk for cardiovascular issues');
+                nutritionAdvice.push('Reduce saturated fat intake from fried foods and full-fat dairy to help lower cholesterol');
+                nutritionAdvice.push('Add more soluble fiber from oats, beans, and fruits to help reduce cholesterol absorption');
+                lifestyleRecommendations.push('Incorporate regular aerobic exercise (30 minutes, 5 times a week) to help lower cholesterol');
+              }
+              break;
+              
+            case 'ldl':
+              if (numericValue > range.max) {
+                interpretation = `LDL (bad) cholesterol is elevated, contributing to increased cardiovascular risk.`;
+                recommendation = 'Reduce saturated fat intake, increase soluble fiber, and consider plant sterols/stanols. Regular exercise is also beneficial for lowering LDL.';
+                
+                healthInsights.push('Your LDL (bad) cholesterol is particularly high and should be addressed promptly');
+                nutritionAdvice.push('Consider adding plant sterols/stanols found in special margarines and supplements');
+                nutritionAdvice.push('Include omega-3 fatty acids from fatty fish, walnuts, and flaxseeds for heart health');
+              }
+              break;
+              
+            case 'glucose':
+              if (numericValue > range.max) {
+                interpretation = numericValue > 125 
+                  ? 'Significantly elevated fasting glucose indicates possible diabetes.' 
+                  : 'Elevated fasting glucose indicates prediabetes, which increases your risk of developing type 2 diabetes.';
+                recommendation = 'Focus on reducing simple carbohydrates and sugars in your diet. Regular exercise and weight management can help improve insulin sensitivity.';
+                
+                healthInsights.push('Your fasting glucose levels are elevated, suggesting prediabetes or potential diabetes');
+                nutritionAdvice.push('Reduce refined carbohydrates and added sugars in your diet');
+                nutritionAdvice.push('Focus on complex carbohydrates with high fiber content');
+                lifestyleRecommendations.push('Regular exercise can help improve insulin sensitivity and regulate blood sugar');
+              }
+              break;
+              
+            default:
+              interpretation = numericValue < range.min
+                ? `Below normal range for ${range.description}.`
+                : `Above normal range for ${range.description}.`;
+              recommendation = 'Consider discussing these results with your healthcare provider.';
+          }
+          
+          abnormalValues.push({
+            name: range.description,
+            value: valueWithUnit,
+            referenceRange: referenceRangeStr,
+            interpretation,
+            severity,
+            recommendation
+          });
+        } else {
+          normalValues.push({
+            name: range.description,
+            value: valueWithUnit,
+            referenceRange: referenceRangeStr
+          });
+        }
+      }
+    });
+    
+    // Add general health insights if not already added
+    if (normalValues.length > 0 && !healthInsights.find(i => i.includes('normal ranges'))) {
+      healthInsights.push(`${normalValues.length} values are within normal ranges, indicating good overall health in those areas`);
+    }
+    
+    // Add general lifestyle recommendations if not already added
+    if (!lifestyleRecommendations.find(r => r.includes('adequate sleep'))) {
+      lifestyleRecommendations.push('Ensure adequate sleep (7-8 hours) to support overall health and recovery');
+    }
+    
+    if (!lifestyleRecommendations.find(r => r.includes('well-hydrated'))) {
+      lifestyleRecommendations.push('Stay well-hydrated throughout the day');
+    }
+    
+    if (!lifestyleRecommendations.find(r => r.includes('stress'))) {
+      lifestyleRecommendations.push('Consider stress reduction techniques to support overall health');
+    }
+    
+    if (abnormalValues.find(v => v.name.includes('Cholesterol') || v.name.includes('LDL')) && 
+        !lifestyleRecommendations.find(r => r.includes('smoking'))) {
+      lifestyleRecommendations.push('If you smoke, consider a smoking cessation program as smoking worsens cardiovascular risk');
+    }
+    
+    return {
+      abnormalValues,
+      normalValues,
+      healthInsights,
+      nutritionAdvice,
+      lifestyleRecommendations
+    };
+  };
+
   const handleAnalyzeReport = async () => {
     if (!selectedFile) {
       setUploadError('Please select a file to analyze');
@@ -404,6 +793,8 @@ export default function BloodReportAnalysisPage() {
 
     setIsUploading(true);
     setUploadError('');
+    setProcessingStage('Preparing to analyze...');
+    setProcessingProgress(10);
 
     try {
       // Get auth token from localStorage
@@ -413,110 +804,63 @@ export default function BloodReportAnalysisPage() {
         throw new Error('Authentication token not found. Please log in again.');
       }
 
-      // Create form data to send the file
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      // In a production app, call your API endpoint
-      // For now, we'll simulate a response with a timeout
-      // Uncomment the fetch code below when you're ready to use the real API
-      /*
-      const response = await fetch('/api/blood-report/analyze', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to analyze the report');
-      }
-
-      setAnalysisResult(data.analysis);
-      */
+      // Update progress for PDF extraction
+      setProcessingStage('Extracting data from PDF...');
+      setProcessingProgress(30);
       
-      // Simulate API call with a timeout (remove this in production)
-      setTimeout(() => {
-        // Mock response data
-        const mockAnalysis = {
-          reportDate: '2023-04-15',
-          patientInfo: {
-            name: user?.name || 'Patient',
-            age: '35',
-            gender: 'Male'
-          },
-          abnormalValues: [
-            {
-              name: 'Hemoglobin',
-              value: '11.2 g/dL',
-              referenceRange: '13.5-17.5 g/dL',
-              interpretation: 'Below normal range, indicating possible mild anemia. This can cause fatigue, weakness, and reduced oxygen transport to tissues.',
-              severity: 'Mild',
-              recommendation: 'Consider increasing iron-rich foods in your diet such as red meat, spinach, beans, and fortified cereals. Vitamin C can help with iron absorption.'
-            },
-            {
-              name: 'Cholesterol (Total)',
-              value: '245 mg/dL',
-              referenceRange: '< 200 mg/dL',
-              interpretation: 'Above normal range, indicating high cholesterol. This increases your risk of heart disease and stroke.',
-              severity: 'Moderate',
-              recommendation: 'Focus on a heart-healthy diet low in saturated fats. Regular exercise and weight management can help. Discuss with your doctor if medication might be necessary.'
-            },
-            {
-              name: 'LDL Cholesterol',
-              value: '162 mg/dL',
-              referenceRange: '< 100 mg/dL',
-              interpretation: 'LDL (bad) cholesterol is significantly elevated, contributing to your high total cholesterol and increasing cardiovascular risk.',
-              severity: 'Moderate',
-              recommendation: 'Reduce saturated fat intake, increase soluble fiber, and consider plant sterols/stanols. Regular exercise is also beneficial for lowering LDL.'
-            }
-          ],
-          normalValues: [
-            { name: 'White Blood Cells', value: '7.5 x10^9/L', referenceRange: '4.5-11.0 x10^9/L' },
-            { name: 'Platelets', value: '250 x10^9/L', referenceRange: '150-450 x10^9/L' },
-            { name: 'Glucose (Fasting)', value: '92 mg/dL', referenceRange: '70-99 mg/dL' },
-            { name: 'HDL Cholesterol', value: '48 mg/dL', referenceRange: '> 40 mg/dL' },
-            { name: 'Creatinine', value: '0.9 mg/dL', referenceRange: '0.7-1.3 mg/dL' }
-          ],
-          healthInsights: [
-            'Your hemoglobin levels indicate mild anemia, which may cause fatigue and weakness',
-            'Your cholesterol levels are elevated, which increases risk for cardiovascular issues',
-            'Your LDL (bad) cholesterol is particularly high and should be addressed promptly',
-            'All kidney function markers are normal, indicating good kidney health',
-            'Blood sugar levels are within normal range, suggesting no immediate concerns for diabetes'
-          ],
-          nutritionAdvice: [
-            'Increase iron-rich foods like lean red meat, beans, and leafy greens to address anemia',
-            'Reduce saturated fat intake from fried foods and full-fat dairy to help lower cholesterol',
-            'Add more soluble fiber from oats, beans, and fruits to help reduce cholesterol absorption',
-            'Consider adding plant sterols/stanols found in special margarines and supplements',
-            'Include omega-3 fatty acids from fatty fish, walnuts, and flaxseeds for heart health'
-          ],
-          lifestyleRecommendations: [
-            'Incorporate regular aerobic exercise (30 minutes, 5 times a week) to help lower cholesterol',
-            'Consider stress reduction techniques as stress can affect both anemia and cholesterol levels',
-            'Ensure adequate sleep (7-8 hours) to support overall health and recovery',
-            'Stay well-hydrated throughout the day',
-            'If you smoke, consider a smoking cessation program as smoking worsens cardiovascular risk'
-          ],
-          trends: {
-            available: false,
-            message: 'Historical data not available. Upload more reports to track health trends over time.'
-          }
-        };
+      // Parse the uploaded report (this would normally be done on the server)
+      // Here we're simulating it client-side for the demo
+      const extractedData = await parseBloodReport(selectedFile);
+      
+      // Update progress for analysis
+      setProcessingStage('Analyzing blood test values...');
+      setProcessingProgress(60);
+      
+      // Generate analysis based on the extracted data
+      const analysis = analyzeBloodValues(extractedData.parsedData);
+      
+      // Update progress for finalizing
+      setProcessingStage('Generating recommendations...');
+      setProcessingProgress(80);
+      
+      // Combine everything into a complete analysis result
+      const completeAnalysis = {
+        reportDate: extractedData.reportDate,
+        patientInfo: {
+          name: extractedData.patientName || user?.name || 'Patient',
+          age: '35', // In a real app, this would come from the user profile
+          gender: 'Male' // In a real app, this would come from the user profile
+        },
+        ...analysis,
+        trends: {
+          available: false,
+          message: 'Historical data not available. Upload more reports to track health trends over time.'
+        }
+      };
 
-        setAnalysisResult(mockAnalysis);
-        // Calculate health score based on abnormal values
-        setHealthScore(calculateHealthScore(mockAnalysis.abnormalValues));
-        setIsUploading(false);
-      }, 2000);
+      console.log('Analysis complete:', completeAnalysis);
+      
+      // Final progress update
+      setProcessingStage('Finalizing results...');
+      setProcessingProgress(95);
+      
+      // Add a small delay to show the final progress state
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Set the result
+      setAnalysisResult(completeAnalysis);
+      
+      // Calculate health score based on abnormal values
+      setHealthScore(calculateHealthScore(completeAnalysis.abnormalValues));
+      setIsUploading(false);
+      setProcessingProgress(100);
+      setProcessingStage('');
     } catch (error) {
       console.error('Error analyzing report:', error);
       setUploadError(error instanceof Error ? error.message : 'Failed to analyze the report. Please try again.');
       setIsUploading(false);
+      setProcessingProgress(0);
+      setProcessingStage('');
     }
   };
 
@@ -561,6 +905,25 @@ export default function BloodReportAnalysisPage() {
                       <p className="text-sm text-blue-600 mt-1">
                         Your data is securely processed and not shared with third parties
                       </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-200">
+                  <div className="flex items-start">
+                    <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
+                    <div>
+                      <p className="text-amber-800 font-medium">
+                        Demo Mode Active
+                      </p>
+                      <p className="text-sm text-amber-700 mt-1">
+                        This demonstration simulates PDF extraction from blood reports. Try uploading any PDF file - the filename will affect the simulated results:
+                      </p>
+                      <ul className="text-xs text-amber-700 mt-2 ml-4 list-disc">
+                        <li>Files with "anemia" in the name will simulate anemia test results</li>
+                        <li>Files with "cholesterol" or "lipid" in the name will simulate high cholesterol results</li>
+                        <li>Other filenames will simulate a comprehensive blood panel</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -642,7 +1005,15 @@ export default function BloodReportAnalysisPage() {
                   {isUploading ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      <span>Analyzing Report...</span>
+                      <span>{processingStage || 'Analyzing Report...'}</span>
+                      {processingProgress > 0 && (
+                        <div className="absolute inset-x-0 bottom-0 h-1 bg-gray-200">
+                          <div 
+                            className="h-full bg-primary transition-all duration-300 ease-in-out"
+                            style={{ width: `${processingProgress}%` }}
+                          ></div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     <>

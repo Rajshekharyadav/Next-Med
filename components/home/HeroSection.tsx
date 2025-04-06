@@ -24,11 +24,11 @@ const HeroSection = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/appointment" className="btn-primary flex items-center justify-center gap-2">
-                Book Appointment
+                Try Skin Vision
               </Link>
               <Link href="/ai-diagnosis" className="btn-secondary flex items-center justify-center gap-2">
                 <img 
-                  src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" 
                   alt="Gemini" 
                   className="h-4 w-4 mr-1"
                 />
