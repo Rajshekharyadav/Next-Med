@@ -30,13 +30,30 @@ export default function HealthRecordsPage() {
 
     const fetchRecords = async () => {
       try {
-        const response = await fetch('/api/health-records');
+        // Get the authentication token from localStorage
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error('Authentication token not found');
+        }
+
+        const response = await fetch('/api/health-records', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         
         if (!response.ok) {
+          if (response.status === 401) {
+            // If unauthorized, redirect to login
+            router.push('/login?callbackUrl=/health-records');
+            throw new Error('Please login to view health records');
+          }
           throw new Error('Failed to fetch health records');
         }
         
         const data = await response.json();
+        console.log('Health records data:', data); // Debug log
         setRecords(data.records || []);
       } catch (err: any) {
         setError(err.message || 'An error occurred');
@@ -65,6 +82,14 @@ export default function HealthRecordsPage() {
       ) : error ? (
         <div className="bg-red-50 text-red-700 p-4 rounded-md">
           <p>{error}</p>
+          {error.includes('login') && (
+            <button 
+              onClick={() => router.push('/login?callbackUrl=/health-records')}
+              className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+            >
+              Login
+            </button>
+          )}
         </div>
       ) : records.length === 0 ? (
         <div className="bg-blue-50 text-blue-700 p-8 rounded-lg text-center">

@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 
+// Import the doctors array to access doctor information
+import { doctors } from '../../../data/doctors';
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
@@ -20,11 +23,42 @@ export async function POST(request: Request) {
       );
     }
 
+    // Find the doctor in our mock data
+    const doctor = doctors.find(doc => doc.id === parseInt(doctorId));
+    
+    if (!doctor) {
+      return NextResponse.json(
+        { success: false, error: 'Doctor not found' },
+        { status: 404 }
+      );
+    }
+
     // Simulating processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Generate a booking reference
     const bookingReference = `BK-${Math.floor(100000 + Math.random() * 900000)}`;
+    
+    // Parse date and time from slotId (format: YYYY-MM-DD-HHMM-doctorId)
+    const slotParts = slotId.split('-');
+    const date = `${slotParts[0]}-${slotParts[1]}-${slotParts[2]}`;
+    
+    // Default to current date + 2 days if we can't parse the date
+    const appointmentDate = date || new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    
+    // Default time or extract from slot
+    let appointmentTime = "10:00 AM";
+    if (slotParts.length > 3) {
+      // Convert HHMM to HH:MM AM/PM
+      const timeNum = parseInt(slotParts[3]);
+      if (!isNaN(timeNum)) {
+        const hours = Math.floor(timeNum / 100);
+        const minutes = timeNum % 100;
+        const period = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+        appointmentTime = `${displayHours}:${minutes < 10 ? '0' + minutes : minutes} ${period}`;
+      }
+    }
     
     // Mock response
     return NextResponse.json({
@@ -40,19 +74,15 @@ export async function POST(request: Request) {
           phone
         },
         notes: notes || "",
-        // In a real app, these would come from the database based on doctorId and slotId
         doctor: {
-          name: doctorId === 1 ? "Dr. Jennifer Wilson" : 
-                doctorId === 2 ? "Dr. Robert Smith" : 
-                doctorId === 3 ? "Dr. Maria Garcia" : "Dr. David Kim",
-          specialty: doctorId === 1 ? "Cardiologist" : 
-                    doctorId === 2 ? "Neurologist" : 
-                    doctorId === 3 ? "Dermatologist" : "Orthopedic Surgeon"
+          name: doctor.name,
+          specialty: doctor.specialty,
+          imageUrl: doctor.imageUrl
         },
         appointmentDetails: {
-          date: "2023-07-15",  // Would be from the real slot in a real app
-          time: "10:00 AM",    // Would be from the real slot in a real app
-          type: "video"        // Would be from the real slot in a real app
+          date: appointmentDate,
+          time: appointmentTime,
+          type: "video"
         }
       },
       message: "Your appointment has been successfully booked. A confirmation email has been sent to your email address."

@@ -1,6 +1,7 @@
 "use client";
 
-import { FiUsers, FiCalendar, FiVideo, FiFileText, FiClock, FiAward } from 'react-icons/fi';
+import Link from 'next/link';
+import { FiUsers, FiCalendar, FiVideo, FiFileText, FiClock, FiAward, FiCamera } from 'react-icons/fi';
 
 const features = [
   {
@@ -29,12 +30,19 @@ const features = [
   },
   {
     id: 5,
+    title: 'Skin Vision Analysis',
+    description: 'Get AI-powered analysis of skin conditions by uploading photos for fast assessment.',
+    icon: <FiCamera className="text-primary" size={32} />,
+    link: '/skin-vision',
+  },
+  {
+    id: 6,
     title: '24/7 Support',
     description: 'Round-the-clock customer service for any queries or emergencies.',
     icon: <FiClock className="text-primary" size={32} />,
   },
   {
-    id: 6,
+    id: 7,
     title: 'Quality Care',
     description: 'High-standard medical care with personalized attention for every patient.',
     icon: <FiAward className="text-primary" size={32} />,
@@ -63,10 +71,28 @@ const FeaturesSection = () => {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-text-dark">
                 {feature.title}
+                {feature.link && (
+                  <span className="ml-2 inline-block">
+                    <Link href={feature.link} className="inline-flex items-center text-primary text-sm font-medium">
+                      Try now
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </span>
+                )}
               </h3>
               <p className="text-text-light">
                 {feature.description}
               </p>
+              {feature.link && (
+                <Link href={feature.link} className="mt-auto pt-3 inline-flex items-center text-primary font-medium hover:underline">
+                  Learn more
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              )}
             </div>
           ))}
         </div>

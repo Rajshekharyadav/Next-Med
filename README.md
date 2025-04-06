@@ -1,80 +1,92 @@
-# NextMed - Advanced Healthcare Platform
+# NextMed AI-powered Healthcare Platform
 
-NextMed is a comprehensive healthcare platform that connects patients with healthcare providers, facilitates appointment booking, tracks health records, and now provides AI-powered symptom analysis.
+NextMed is an advanced healthcare platform leveraging AI technologies to provide comprehensive health services, including skin condition analysis, blood report interpretation, AI-powered diagnostics, and doctor consultations.
 
-## Features
+## Key Features
 
-- User authentication and profile management
-- Appointment scheduling with healthcare providers
-- Health records management
-- AI-powered symptom analysis and condition prediction using Google's Gemini API
-- Responsive design for desktop and mobile devices
+- **Skin Vision Analysis**: AI-powered skin condition detection using VGG16 neural network
+- **Blood Report Analysis**: Automated interpretation of blood test results
+- **AI Diagnostics**: Intelligent symptom analysis and health recommendations
+- **Doctor Consultations**: Connect with healthcare professionals
+- **Health Records**: Securely store and manage your medical history
 
-## New Feature: AI Symptom Analysis with Gemini
+## Technologies
 
-The AI Symptom Analysis feature allows users to:
+- **Frontend**: Next.js, React, TailwindCSS, Framer Motion
+- **Backend**: Next.js API Routes
+- **AI/ML**: TensorFlow, VGG16, Python
+- **Database**: MongoDB (for user data and health records)
 
-1. Select from common symptoms or add custom symptoms
-2. Provide additional context about their condition
-3. Receive AI-powered analysis of possible conditions using Google's Gemini AI
-4. Get recommendations for next steps
-5. Book appointments with relevant specialists based on the analysis
+## Setup Instructions
 
-### How It Works
+### Prerequisites
 
-The AI Symptom Analysis uses Google's Gemini AI to analyze the symptoms provided by the user and generate insights about possible conditions. The system:
+- Node.js (v14+)
+- npm or yarn
+- Python 3.8+ (for AI models)
+- MongoDB (for production)
 
-- Analyzes the combination of symptoms
-- Considers symptom severity and duration
-- Matches patterns against a medical knowledge base
-- Provides probability-based predictions of possible conditions
-- Suggests appropriate next steps for the user
-
-### Important Disclaimer
-
-The AI Symptom Analysis is for informational purposes only and does not constitute professional medical advice, diagnosis, or treatment. Always seek the advice of qualified healthcare providers with any questions you may have regarding a medical condition.
-
-## Environment Setup
-
-To run this application, you need to set up the following environment variables in a `.env.local` file:
-
-```
-# MongoDB Connection
-MONGODB_URI=your_mongodb_connection_string
-
-# Authentication
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_random_secret_key
-
-# Google Gemini API
-GEMINI_API_KEY=your_gemini_api_key
-```
-
-To obtain a Gemini API key, visit [Google AI Studio](https://aistudio.google.com/) and create an API key in your account.
-
-## Installation
+### Installation
 
 1. Clone the repository
-2. Install dependencies:
+   ```
+   git clone https://github.com/your-username/nextmed.git
+   cd nextmed
+   ```
+
+2. Install JavaScript dependencies
    ```
    npm install
+   # or
+   yarn install
    ```
-3. Set up environment variables as described above
-4. Run the development server:
+
+3. Install Python dependencies for AI models
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Environment setup
+   Create a `.env.local` file with the following variables:
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=http://localhost:3000
+   USE_MOCK_SKIN_VISION=true  # Set to false to use the actual Python model
+   ```
+
+5. Start the development server
    ```
    npm run dev
+   # or
+   yarn dev
    ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Technology Stack
+## Skin Vision AI Model
 
-- Next.js (App Router)
-- TypeScript
-- MongoDB
-- Tailwind CSS
-- Google Gemini AI API
-- NextAuth.js for authentication
+The Skin Vision feature uses a VGG16-based deep learning model to analyze skin conditions from uploaded photos.
+
+### Model Training
+
+The model was trained on dermatological image datasets to classify skin conditions into benign and potentially malignant categories. The VGG16 architecture was used with transfer learning to leverage pre-trained weights.
+
+To train your own model:
+
+1. Collect a dataset of classified skin condition images
+2. Run the training script:
+   ```
+   python train_skin_vision_model.py --dataset_path /path/to/dataset --epochs 20
+   ```
+
+3. The trained model will be saved to the `models` directory
+
+### Using the Skin Vision Feature
+
+1. Navigate to the Skin Vision page
+2. Upload a clear image of the skin condition
+3. The AI will analyze the image and provide results
+4. Follow the recommended actions based on the analysis
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+MIT 

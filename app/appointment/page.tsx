@@ -4,11 +4,21 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiCalendar, FiClock, FiUser, FiMessageSquare, FiArrowLeft } from 'react-icons/fi';
 
+interface Doctor {
+  id: number;
+  name: string;
+  specialty: string;
+  rating: number;
+  reviews: number;
+  available: boolean;
+  imageUrl: string;
+}
+
 const AppointmentPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [doctors, setDoctors] = useState([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [formData, setFormData] = useState({
@@ -63,12 +73,15 @@ const AppointmentPage = () => {
         const data = await response.json();
         
         if (data.success) {
+          console.log('Loaded doctors:', data.doctors);
           setDoctors(data.doctors);
         } else {
           setError('Failed to load doctors');
+          console.error('Failed to load doctors:', data.error);
         }
       } catch (error) {
         setError('Network error when fetching doctors');
+        console.error('Network error when fetching doctors:', error);
       } finally {
         setIsLoading(false);
       }
@@ -77,7 +90,7 @@ const AppointmentPage = () => {
     fetchDoctors();
   }, []);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -85,7 +98,7 @@ const AppointmentPage = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     // Reset messages
@@ -105,6 +118,18 @@ const AppointmentPage = () => {
     
     setIsSubmitting(true);
     
+    // Format the slotId
+    const timeValue = selectedTime.replace(/[:\s]/g, ''); // Remove colons and spaces
+    const slotId = `${selectedDate}-${timeValue}-${selectedDoctor}`;
+    
+    console.log('Booking appointment with:', {
+      doctorId: selectedDoctor,
+      slotId: slotId,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone
+    });
+    
     try {
       const response = await fetch('/api/appointments/book', {
         method: 'POST',
@@ -113,7 +138,7 @@ const AppointmentPage = () => {
         },
         body: JSON.stringify({
           doctorId: selectedDoctor,
-          slotId: `${selectedDate}-${selectedTime.replace(':', '')}-${selectedDoctor}`,
+          slotId: slotId,
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
@@ -122,6 +147,7 @@ const AppointmentPage = () => {
       });
       
       const data = await response.json();
+      console.log('Appointment booking response:', data);
       
       if (data.success) {
         setSuccess('Your appointment has been successfully booked! Check your email for confirmation details.');
@@ -137,6 +163,7 @@ const AppointmentPage = () => {
         setError(data.error || 'Failed to book appointment');
       }
     } catch (error) {
+      console.error('Error booking appointment:', error);
       setError('An error occurred. Please try again later.');
     } finally {
       setIsSubmitting(false);
@@ -144,7 +171,7 @@ const AppointmentPage = () => {
   };
 
   // Find doctor by ID
-  const getDoctor = (id) => {
+  const getDoctor = (id: number): Doctor | null => {
     return doctors.find(doc => doc.id === id) || null;
   };
   

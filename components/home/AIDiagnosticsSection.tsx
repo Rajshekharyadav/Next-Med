@@ -281,10 +281,20 @@ const AIDiagnosticsSection = () => {
                   
                   <button 
                     onClick={() => resetAnalysis('skin')}
-                    className="w-full bg-gray-100 text-gray-700 py-2 rounded hover:bg-gray-200 transition duration-300 mt-4"
+                    className="w-full bg-gray-100 text-gray-700 py-2 rounded hover:bg-gray-200 transition duration-300 mt-4 mb-2"
                   >
                     Start New Analysis
                   </button>
+                  
+                  <a 
+                    href="/skin-vision" 
+                    className="w-full flex justify-center items-center py-2 mt-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition duration-300"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                    Try Skin Vision Advanced
+                  </a>
                 </>
               ) : (
                 <>
@@ -331,7 +341,7 @@ const AIDiagnosticsSection = () => {
                   <button 
                     onClick={analyzeSkin}
                     disabled={!skinImage || isAnalyzing.skin}
-                    className={`w-full flex justify-center items-center py-2 rounded transition duration-300 ${
+                    className={`w-full flex justify-center items-center py-2 rounded transition duration-300 mb-2 ${
                       !skinImage ? 'bg-gray-300 cursor-not-allowed' : 'bg-primary text-white hover:bg-primary-dark'
                     }`}
                   >
@@ -352,6 +362,16 @@ const AIDiagnosticsSection = () => {
                       </>
                     )}
                   </button>
+                  
+                  <a 
+                    href="/skin-vision" 
+                    className="w-full flex justify-center items-center py-2 mt-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition duration-300"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                    Try Skin Vision Advanced
+                  </a>
                 </>
               )}
             </div>
