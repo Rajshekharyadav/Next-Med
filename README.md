@@ -54,6 +54,7 @@ The project includes several mock API routes to simulate a fully functional back
 
 - Node.js (v14 or later)
 - npm or yarn
+- Python 3.8 or later (for AI services)
 
 ### Installation
 
@@ -63,21 +64,38 @@ git clone https://github.com/yourusername/next-med.git
 cd next-med
 ```
 
-2. Install dependencies:
+2. Install frontend dependencies:
 ```bash
 npm install
 # or
 yarn install
 ```
 
-3. Run the development server:
+3. Set up the Python AI service:
 ```bash
+cd backend/python_skin_analysis_api
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Running the Application
+
+1. Start the Python AI service:
+```bash
+# From backend/python_skin_analysis_api directory
+python start_api.py
+```
+
+2. In a new terminal, start the Next.js development server:
+```bash
+# From the project root directory
 npm run dev
 # or
 yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
@@ -86,7 +104,20 @@ yarn dev
 - `/components/home`: Home page specific components
 - `/components/layout`: Layout components like header and footer
 - `/app/api`: API routes for backend functionality
+- `/backend/python_skin_analysis_api`: Python FastAPI service for AI skin analysis
 - `/public`: Static assets like images
+
+## Skin Vision Analysis Feature
+
+The skin vision analysis feature uses a ResNet-50 deep learning model to analyze skin images. The implementation consists of:
+
+1. A Python FastAPI service that exposes the AI model as a REST API
+2. A Next.js API route that acts as a proxy to the Python service
+3. A frontend interface in the skin vision page
+
+The model supports 21 different skin conditions and provides confidence scores along with medical recommendations for each condition.
+
+For detailed information about the integration, see [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md).
 
 ## Future Enhancements
 
@@ -98,4 +129,4 @@ yarn dev
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
