@@ -19,31 +19,62 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
-  <header class="bg-white shadow-md py-4">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md py-4">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-primary">NextMed</h1>
+        <h1 class="text-2xl font-bold text-white">NextMed</h1>
+        
+        <!-- Desktop Navigation -->
         <nav class="hidden md:flex space-x-6">
-          <a href="#" class="text-gray-700 hover:text-primary">Home</a>
-          <a href="#services" class="text-gray-700 hover:text-primary">Services</a>
-          <a href="#ai-diagnostics" class="text-gray-700 hover:text-primary">AI Diagnostics</a>
-          <a href="#doctors" class="text-gray-700 hover:text-primary">Doctors</a>
-          <a href="#health-records" class="text-gray-700 hover:text-primary">Health Records</a>
-          <a href="#" class="text-gray-700 hover:text-primary">Contact</a>
+          <a href="#" class="text-white hover:text-blue-300 font-medium transition-colors">Home</a>
+          <a href="#services" class="text-white hover:text-blue-300 font-medium transition-colors">Services</a>
+          <a href="#ai-diagnostics" class="text-white hover:text-blue-300 font-medium transition-colors">AI Diagnostics</a>
+          <a href="#doctors" class="text-white hover:text-blue-300 font-medium transition-colors">Doctors</a>
+          <a href="#health-records" class="text-white hover:text-blue-300 font-medium transition-colors">Health Records</a>
+          <a href="#" class="text-white hover:text-blue-300 font-medium transition-colors">Contact</a>
         </nav>
-        <div class="flex items-center space-x-4">
-          <button class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark">
+        
+        <!-- Desktop Buttons -->
+        <div class="hidden md:flex items-center space-x-4">
+          <button class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded border border-white/30 hover:bg-white/30 transition-all">
             Book Appointment
           </button>
-          <button class="border border-primary text-primary px-4 py-2 rounded hover:bg-blue-50">
+          <button class="border border-white/30 text-white px-4 py-2 rounded hover:bg-white/10 transition-all">
             Login
           </button>
         </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 bg-black/30 backdrop-blur-md rounded-lg p-4">
+        <nav class="flex flex-col space-y-4">
+          <a href="#" class="text-white hover:text-blue-300 font-medium transition-colors">Home</a>
+          <a href="#services" class="text-white hover:text-blue-300 font-medium transition-colors">Services</a>
+          <a href="#ai-diagnostics" class="text-white hover:text-blue-300 font-medium transition-colors">AI Diagnostics</a>
+          <a href="#doctors" class="text-white hover:text-blue-300 font-medium transition-colors">Doctors</a>
+          <a href="#health-records" class="text-white hover:text-blue-300 font-medium transition-colors">Health Records</a>
+          <a href="#" class="text-white hover:text-blue-300 font-medium transition-colors">Contact</a>
+          <div class="flex flex-col space-y-2 pt-4 border-t border-white/20">
+            <button class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded border border-white/30 hover:bg-white/30 transition-all">
+              Book Appointment
+            </button>
+            <button class="border border-white/30 text-white px-4 py-2 rounded hover:bg-white/10 transition-all">
+              Login
+            </button>
+          </div>
+        </nav>
       </div>
     </div>
   </header>
 
-  <main class="flex-grow">
+  <main class="flex-grow pt-20">
     <!-- Hero Section -->
     <section class="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
       <div class="container mx-auto px-4">
@@ -529,8 +560,15 @@
   </footer>
 
   <script>
-    // Simple script to toggle mobile menu (expanded version would include more functionality)
     document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      mobileMenuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+      });
+      
       // Add smooth scrolling for anchor links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -541,6 +579,8 @@
             document.querySelector(targetId).scrollIntoView({
               behavior: 'smooth'
             });
+            // Close mobile menu after clicking a link
+            mobileMenu.classList.add('hidden');
           }
         });
       });

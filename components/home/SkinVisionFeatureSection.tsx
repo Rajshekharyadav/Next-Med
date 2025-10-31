@@ -6,7 +6,7 @@ import { FiCamera, FiShield, FiClock, FiCheckCircle } from 'react-icons/fi';
 
 const SkinVisionFeatureSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -19,10 +19,10 @@ const SkinVisionFeatureSection = () => {
             <div className="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-medium">
               NEW FEATURE
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
               AI-Powered Skin Condition Analysis
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-white/80">
               Upload photos of your skin concerns and get instant AI analysis, recommendations, and next steps—all from the comfort of your home.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
@@ -31,8 +31,8 @@ const SkinVisionFeatureSection = () => {
                   <FiShield className="text-primary text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Privacy First</h3>
-                  <p className="text-gray-600 text-sm">Your data is always secure and private</p>
+                  <h3 className="font-semibold text-white">Privacy First</h3>
+                  <p className="text-white/80 text-sm">Your data is always secure and private</p>
                 </div>
               </div>
               <div className="flex">
@@ -40,8 +40,8 @@ const SkinVisionFeatureSection = () => {
                   <FiClock className="text-primary text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Results in Seconds</h3>
-                  <p className="text-gray-600 text-sm">No waiting for appointments</p>
+                  <h3 className="font-semibold text-white">Results in Seconds</h3>
+                  <p className="text-white/80 text-sm">No waiting for appointments</p>
                 </div>
               </div>
               <div className="flex">
@@ -49,8 +49,8 @@ const SkinVisionFeatureSection = () => {
                   <FiCamera className="text-primary text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Simple to Use</h3>
-                  <p className="text-gray-600 text-sm">Just upload a photo and get analysis</p>
+                  <h3 className="font-semibold text-white">Simple to Use</h3>
+                  <p className="text-white/80 text-sm">Just upload a photo and get analysis</p>
                 </div>
               </div>
               <div className="flex">
@@ -58,21 +58,21 @@ const SkinVisionFeatureSection = () => {
                   <FiCheckCircle className="text-primary text-xl" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Expert Follow-up</h3>
-                  <p className="text-gray-600 text-sm">Connect with doctors if needed</p>
+                  <h3 className="font-semibold text-white">Expert Follow-up</h3>
+                  <p className="text-white/80 text-sm">Connect with doctors if needed</p>
                 </div>
               </div>
             </div>
             <div className="pt-4">
               <Link 
                 href="/skin-vision" 
-                className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition duration-300"
+                className="inline-block bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 border border-white/20"
               >
                 Try Skin Vision Advanced
               </Link>
               <Link
                 href="#ai-diagnostics"
-                className="inline-block ml-4 text-primary hover:text-primary-dark font-medium py-3 transition duration-300"
+                className="inline-block ml-4 text-white hover:text-white/80 font-medium py-3 transition duration-300"
               >
                 Learn More
               </Link>

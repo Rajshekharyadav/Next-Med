@@ -14,8 +14,24 @@ const fadeIn = {
 
 const SimpleEnhanced3DHero = () => {
   return (
-    <section className="relative py-20 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-      <div className="absolute inset-0">
+    <section className="relative py-20 overflow-hidden">
+      {/* Background Video */}
+      <video 
+        autoPlay 
+        muted 
+        loop 
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/background video.mp4" type="video/mp4" />
+        <source src="/background video.webm" type="video/webm" />
+      </video>
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/50 z-10" />
+      
+      {/* Animated overlay elements */}
+      <div className="absolute inset-0 z-20">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
         <motion.div 
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
@@ -31,7 +47,7 @@ const SimpleEnhanced3DHero = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-30">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
           <motion.div 
             className="relative z-10"
@@ -81,12 +97,11 @@ const SimpleEnhanced3DHero = () => {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/skin-vision" className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 overflow-hidden">
-                  <span className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity"></span>
-                  <svg className="w-5 h-5 mr-2 relative z-10 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Link href="/skin-vision" className="group relative inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-xl font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/40 hover:shadow-2xl hover:shadow-blue-500/25">
+                  <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                   </svg>
-                  <span className="relative z-10">Try Skin Vision AI</span>
+                  <span>Try Skin Vision AI</span>
                 </Link>
               </motion.div>
               
@@ -94,9 +109,8 @@ const SimpleEnhanced3DHero = () => {
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/ai-diagnosis" className="group relative inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-xl font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/40">
-                  <span className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  <span className="relative z-10">🧠 AI Diagnosis</span>
+                <Link href="/ai-diagnosis" className="group relative inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-xl font-semibold transition-all duration-300 hover:bg-white/20 hover:border-white/40">
+                  <span>🧠 AI Diagnosis</span>
                 </Link>
               </motion.div>
             </motion.div>

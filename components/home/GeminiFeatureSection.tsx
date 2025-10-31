@@ -43,7 +43,7 @@ const analyzeAnimation = {
 
 const GeminiFeatureSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-blue-50 to-white relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       {/* Background elements */}
       <motion.div 
         className="absolute -top-20 -right-20 w-64 h-64 bg-blue-200/40 rounded-full blur-3xl"
@@ -104,7 +104,7 @@ const GeminiFeatureSection = () => {
               </motion.div>
               
               <motion.h2 
-                className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+                className="text-3xl md:text-4xl font-bold text-white mb-4"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -124,7 +124,7 @@ const GeminiFeatureSection = () => {
               </motion.h2>
               
               <motion.p 
-                className="text-lg text-gray-600 mb-6"
+                className="text-lg text-white/80 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -162,8 +162,8 @@ const GeminiFeatureSection = () => {
                     <BrainCircuit className="text-primary h-5 w-5 mt-1 mr-2" />
                   </motion.div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Intelligent Analysis</h3>
-                    <p className="text-sm text-gray-600">Powered by Google's latest AI models</p>
+                    <h3 className="font-medium text-white">Intelligent Analysis</h3>
+                    <p className="text-sm text-white/80">Powered by Google's latest AI models</p>
                   </div>
                 </motion.div>
                 
@@ -180,8 +180,8 @@ const GeminiFeatureSection = () => {
                     <Sparkles className="text-primary h-5 w-5 mt-1 mr-2" />
                   </motion.div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Comprehensive Results</h3>
-                    <p className="text-sm text-gray-600">Detailed analysis with probability ratings</p>
+                    <h3 className="font-medium text-white">Comprehensive Results</h3>
+                    <p className="text-sm text-white/80">Detailed analysis with probability ratings</p>
                   </div>
                 </motion.div>
                 
@@ -198,8 +198,8 @@ const GeminiFeatureSection = () => {
                     <Clipboard className="text-primary h-5 w-5 mt-1 mr-2" />
                   </motion.div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Actionable Insights</h3>
-                    <p className="text-sm text-gray-600">Get recommended next steps</p>
+                    <h3 className="font-medium text-white">Actionable Insights</h3>
+                    <p className="text-sm text-white/80">Get recommended next steps</p>
                   </div>
                 </motion.div>
                 
@@ -216,8 +216,8 @@ const GeminiFeatureSection = () => {
                     <BarChart4 className="text-primary h-5 w-5 mt-1 mr-2" />
                   </motion.div>
                   <div>
-                    <h3 className="font-medium text-gray-900">Private & Secure</h3>
-                    <p className="text-sm text-gray-600">Your health data stays protected</p>
+                    <h3 className="font-medium text-white">Private & Secure</h3>
+                    <p className="text-sm text-white/80">Your health data stays protected</p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -230,7 +230,7 @@ const GeminiFeatureSection = () => {
               >
                 <Link href="/ai-diagnosis">
                   <motion.span 
-                    className="bg-primary text-white px-6 py-3 rounded-md font-medium inline-block relative overflow-hidden group"
+                    className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-md font-medium inline-block relative overflow-hidden group"
                     whileHover={{ 
                       scale: 1.05, 
                       boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)"
@@ -270,7 +270,7 @@ const GeminiFeatureSection = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <motion.div 
-              className="relative bg-white rounded-xl shadow-xl overflow-hidden p-6 border border-gray-100"
+              className="relative bg-black/30 backdrop-blur-md rounded-xl shadow-xl overflow-hidden p-6 border border-white/10"
               whileHover={{ 
                 y: -5, 
                 boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
@@ -305,15 +305,15 @@ const GeminiFeatureSection = () => {
               
               <div className="relative z-10">
                 <motion.div 
-                  className="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-100"
+                  className="mb-6 bg-black/20 backdrop-blur-sm p-4 rounded-lg border border-white/10"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                   whileHover={{ y: -3 }}
                 >
-                  <h4 className="font-medium text-primary mb-2">Your Symptoms</h4>
-                  <p className="text-gray-700 text-sm mb-3">Fever, fatigue, headache, and dry cough for 3 days</p>
+                  <h4 className="font-medium text-white mb-2">Your Symptoms</h4>
+                  <p className="text-white/80 text-sm mb-3">Fever, fatigue, headache, and dry cough for 3 days</p>
                   
                   <div className="bg-blue-50 p-2 rounded text-xs text-blue-700 inline-flex items-center">
                     <motion.div
@@ -337,14 +337,14 @@ const GeminiFeatureSection = () => {
                 </motion.div>
                 
                 <motion.div 
-                  className="bg-gray-50 p-4 rounded-lg border border-gray-100"
+                  className="bg-black/20 backdrop-blur-sm p-4 rounded-lg border border-white/10"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                   whileHover={{ y: -3 }}
                 >
-                  <h4 className="font-medium text-primary mb-2">Possible Conditions</h4>
+                  <h4 className="font-medium text-white mb-2">Possible Conditions</h4>
                   
                   <div className="space-y-3">
                     <motion.div 
@@ -354,7 +354,7 @@ const GeminiFeatureSection = () => {
                       transition={{ duration: 0.3, delay: 0.6 }}
                     >
                       <div className="flex justify-between mb-1">
-                        <span className="font-medium text-gray-700">Common Cold</span>
+                        <span className="font-medium text-white">Common Cold</span>
                         <span className="text-sm text-gray-500">75% match</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
@@ -375,7 +375,7 @@ const GeminiFeatureSection = () => {
                       transition={{ duration: 0.3, delay: 0.8 }}
                     >
                       <div className="flex justify-between mb-1">
-                        <span className="font-medium text-gray-700">Seasonal Flu</span>
+                        <span className="font-medium text-white">Seasonal Flu</span>
                         <span className="text-sm text-gray-500">65% match</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
@@ -396,7 +396,7 @@ const GeminiFeatureSection = () => {
                       transition={{ duration: 0.3, delay: 1.0 }}
                     >
                       <div className="flex justify-between mb-1">
-                        <span className="font-medium text-gray-700">COVID-19</span>
+                        <span className="font-medium text-white">COVID-19</span>
                         <span className="text-sm text-gray-500">45% match</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
@@ -419,7 +419,7 @@ const GeminiFeatureSection = () => {
                     transition={{ duration: 0.3, delay: 1.2 }}
                   >
                     <motion.span 
-                      className="text-xs text-blue-700 hover:underline cursor-pointer group inline-flex items-center"
+                      className="text-xs text-white hover:underline cursor-pointer group inline-flex items-center"
                       whileHover={{ x: 3 }}
                     >
                       View full analysis
