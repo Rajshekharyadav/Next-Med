@@ -1,9 +1,32 @@
 import { NextResponse } from 'next/server';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+interface SymptomAnalysis {
+  possibleConditions: string[];
+  recommendedActions: string[];
+  urgency: "low" | "medium" | "high";
+  disclaimer: string;
+}
+
+interface AnalysisResponse {
+  success: boolean;
+  analysis: SymptomAnalysis;
+}
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
     const { symptoms } = data;
+
+    if (!symptoms) {
+      return NextResponse.json(
+        { success: false, error: "No symptoms provided" },
+        { status: 400 }
+      );
+    }
 
     // In a real implementation, this would:
     // 1. Process the symptom text with a medical AI model
@@ -13,8 +36,8 @@ export async function POST(request: Request) {
     // Simulating processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Simple keyword-based mock response (would be much more sophisticated in real app)
-    let response = {
+    // Initialize response with proper typing
+    let response: AnalysisResponse = {
       success: true,
       analysis: {
         possibleConditions: [],
@@ -51,35 +74,19 @@ export async function POST(request: Request) {
         "Take fever-reducing medication as directed",
         "Monitor temperature"
       );
-      response.analysis.urgency = symptomsLower.includes("high fever") ? "medium" : "low";
+      response.analysis.urgency = "medium";
     }
-    
-    if (symptomsLower.includes("cough")) {
-      response.analysis.possibleConditions.push(
-        "Common cold",
-        "Bronchitis",
-        "Allergies"
-      );
-      response.analysis.recommendedActions.push(
-        "Stay hydrated",
-        "Use honey for soothing (if over 1 year old)",
-        "Consider over-the-counter cough suppressants"
-      );
-    }
-    
-    if (symptomsLower.includes("chest pain") || symptomsLower.includes("difficulty breathing")) {
-      response.analysis.possibleConditions.push(
-        "Anxiety",
-        "Respiratory infection",
-        "Cardiac issues"
-      );
-      response.analysis.recommendedActions.push(
-        "Seek immediate medical attention",
-        "Call emergency services if severe"
-      );
+
+    // Update urgency based on symptoms
+    if (symptomsLower.includes("severe") || 
+        symptomsLower.includes("unbearable") || 
+        symptomsLower.includes("emergency")) {
       response.analysis.urgency = "high";
+      response.analysis.recommendedActions.unshift(
+        "Consider seeking immediate medical attention"
+      );
     }
-    
+
     // Default response if no specific symptoms matched
     if (response.analysis.possibleConditions.length === 0) {
       response.analysis.possibleConditions.push(
@@ -100,8 +107,12 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error in symptom analysis:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to analyze symptoms' },
+      { 
+        success: false, 
+        error: 'Failed to analyze symptoms',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
-} 
+}

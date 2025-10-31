@@ -89,7 +89,7 @@ const SkinVisionFeatureSection = () => {
             <div className="relative">
               {/* Main image */}
               <img 
-                src="https://img.freepik.com/free-photo/dermatologist-examining-patient-s-skin_23-2149213503.jpg" 
+                src="https://img.freepik.com/premium-photo/beautiful-woman-with-vitiligo-skin-posing-studio-concept-about-body-positivity-self-acceptance_186382-20138.jpg?w=996" 
                 alt="Skin Analysis with AI" 
                 className="w-full h-auto object-cover rounded-t-xl"
               />

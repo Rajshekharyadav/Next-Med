@@ -5,16 +5,16 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
-export const config = {
-  api: {
-    // Increase the response limit for larger payloads
-    responseLimit: '8mb',
-    // Increase the body parser size limit for larger images
-    bodyParser: {
-      sizeLimit: '8mb',
-    },
-  },
-};
+export const runtime = 'nodejs';
+
+// Configure the route segment
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+export const revalidate = 0;
+
+// Set response configuration
+export const fetchCache = 'force-no-store';
+export const maxDuration = 300;
 
 interface AnalysisResult {
   success: boolean;
