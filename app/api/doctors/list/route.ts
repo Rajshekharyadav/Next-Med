@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { doctors } from '../../../data/doctors';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(request: Request) {
   // Add query parameters support for filtering doctors
   const { searchParams } = new URL(request.url);
@@ -49,4 +53,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

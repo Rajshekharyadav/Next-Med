@@ -3,15 +3,26 @@
 import { useAuth } from '@/app/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function GeminiAPIInfoPage() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  // Redirect if not authenticated
+  useEffect(() => {
+    // Redirect if not authenticated
+    if (!isAuthenticated) {
+      router.push('/login?callbackUrl=/ai-diagnosis/api-info');
+    }
+  }, [isAuthenticated, router]);
+
   if (!isAuthenticated) {
-    router.push('/login?callbackUrl=/ai-diagnosis/api-info');
-    return null;
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+        <p className="mt-4 text-gray-600">Redirecting to login...</p>
+      </div>
+    );
   }
 
   return (
@@ -28,42 +39,37 @@ export default function GeminiAPIInfoPage() {
           <h2 className="text-xl font-semibold mt-6 mb-4">How to Get a Gemini API Key</h2>
           
           <ol className="list-decimal list-inside space-y-3">
-            <li>Visit <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google AI Studio</a></li>
+            <li>
+              Visit{' '}
+              <Link href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                Google AI Studio
+              </Link>
+            </li>
             <li>Sign in with your Google account</li>
-            <li>Navigate to the "API keys" section in your account</li>
-            <li>Click "Create API Key" and follow the instructions</li>
-            <li>Copy your new API key</li>
-            <li>Add it to your .env.local file as GEMINI_API_KEY=your_api_key_here</li>
+            <li>Click on "Get API key" in the top navigation</li>
+            <li>Create a new API key or use an existing one</li>
+            <li>Copy your API key</li>
           </ol>
 
-          <h2 className="text-xl font-semibold mt-6 mb-4">Benefits of Gemini AI</h2>
+          <h2 className="text-xl font-semibold mt-8 mb-4">Setting Up Your Environment</h2>
           
-          <ul className="list-disc list-inside space-y-2">
-            <li>Advanced medical pattern recognition</li>
-            <li>Trained on a diverse range of medical data</li>
-            <li>Designed to provide balanced and thoughtful health insights</li>
-            <li>Regularly updated with the latest medical information</li>
-            <li>Provides nuanced probability ratings for potential conditions</li>
-          </ul>
+          <ol className="list-decimal list-inside space-y-3">
+            <li>Create a <code className="bg-gray-100 px-2 py-1 rounded">.env.local</code> file in your project root</li>
+            <li>Add the following line: <code className="bg-gray-100 px-2 py-1 rounded">GEMINI_API_KEY=your_api_key_here</code></li>
+            <li>Replace <code className="bg-gray-100 px-2 py-1 rounded">your_api_key_here</code> with your actual API key</li>
+            <li>Restart your development server</li>
+          </ol>
 
-          <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-md">
-            <h3 className="text-lg font-medium mb-2 text-amber-800">Important Note</h3>
-            <p className="text-amber-800">
-              The API key provides access to Google's powerful AI models. Keep your API key secure and never share it publicly.
-              The free tier of Gemini API has certain usage limits - consult the Google AI documentation for details.
-            </p>
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link 
-              href="/ai-diagnosis"
-              className="inline-block bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary-dark transition-colors"
-            >
-              Return to AI Diagnosis
-            </Link>
+          <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+            <h3 className="text-lg font-semibold text-blue-700 mb-2">Important Notes</h3>
+            <ul className="list-disc list-inside text-blue-600 space-y-2">
+              <li>Keep your API key secret and never commit it to version control</li>
+              <li>The free tier has usage limits - check Google's documentation for details</li>
+              <li>Consider implementing rate limiting for production use</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}

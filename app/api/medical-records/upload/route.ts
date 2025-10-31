@@ -6,6 +6,21 @@ import fs from 'fs';
 import path from 'path';
 import { mkdir, writeFile } from 'fs/promises';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+interface MedicalRecord {
+  userId: string;
+  fileName: string;
+  filePath: string;
+  description: string;
+  recordType: string;
+  fileSize: number;
+  fileType: string;
+  uploadDate: Date;
+}
+
 // Helper to ensure uploads directory exists
 async function ensureUploadsDir() {
   const dir = path.join(process.cwd(), 'public', 'uploads');
@@ -20,100 +35,74 @@ async function ensureUploadsDir() {
 // POST: Upload a medical record
 export async function POST(request: Request) {
   try {
-    // In a real app, you would authenticate with JWT
-    // For now, we'll get the user from a cookie
     const cookieStore = cookies();
-    const userCookie = cookieStore.get('user');
+    const token = cookieStore.get('next-auth.session-token');
     
-    if (!userCookie || !userCookie.value) {
+    if (!token) {
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
       );
     }
-    
-    // Parse user data from cookie
-    let userData;
-    try {
-      userData = JSON.parse(userCookie.value);
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Invalid user data' },
-        { status: 401 }
-      );
-    }
-    
-    const userId = userData._id;
-    
-    // Parse form data (including file)
+
     const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const recordType = formData.get('recordType') as string;
-    const description = formData.get('description') as string;
-    
-    if (!file) {
+    const uploadedFile = formData.get('file') as File | null;
+    const description = formData.get('description') as string | null;
+    const recordType = formData.get('recordType') as string | null;
+
+    if (!uploadedFile || !(uploadedFile instanceof File)) {
       return NextResponse.json(
         { error: 'No file uploaded' },
         { status: 400 }
       );
     }
-    
-    // Validate file type
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!allowedTypes.includes(file.type)) {
+
+    if (!description || !recordType) {
       return NextResponse.json(
-        { error: 'Invalid file type. Only PDF, JPG, PNG, DOC, or DOCX files are allowed.' },
+        { error: 'Missing required fields' },
         { status: 400 }
       );
     }
+
+    // Save file locally for demo
+    const uploadsDir = await ensureUploadsDir();
+    const fileName = `${Date.now()}-${uploadedFile.name}`;
+    const filePath = path.join(uploadsDir, fileName);
     
-    // Validate file size (10MB max)
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: 'File too large. Maximum size is 10MB.' },
-        { status: 400 }
-      );
-    }
-    
-    // Create unique filename
-    const fileExtension = file.name.split('.').pop();
-    const uniqueFilename = `${Date.now()}-${Math.round(Math.random() * 1e9)}.${fileExtension}`;
-    
-    // Save file to disk
-    const uploadDir = await ensureUploadsDir();
-    const filePath = path.join(uploadDir, uniqueFilename);
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await uploadedFile.arrayBuffer());
     await writeFile(filePath, buffer);
-    
+
     // Save record to database
     const client = await clientPromise;
     const db = client.db('nextmed');
-    const records = db.collection('medicalRecords');
-    
-    const newRecord = {
-      userId: new ObjectId(userId),
-      fileName: file.name,
-      fileType: file.type,
-      recordType,
+    const records = db.collection<MedicalRecord>('medicalRecords');
+
+    const newRecord: MedicalRecord = {
+      userId: 'demo-user', // In real app, get from authenticated session
+      fileName: uploadedFile.name,
+      filePath,
       description,
+      recordType,
+      fileSize: uploadedFile.size,
+      fileType: uploadedFile.type,
       uploadDate: new Date(),
-      fileUrl: `/uploads/${uniqueFilename}`,
-      filePath: filePath,
     };
-    
-    const result = await records.insertOne(newRecord);
-    
+
+    await records.insertOne(newRecord);
+
     return NextResponse.json({
       success: true,
-      recordId: result.insertedId,
-      message: 'Record uploaded successfully'
+      record: {
+        ...newRecord,
+        filePath: `/uploads/${fileName}` // Public URL
+      }
     });
-  } catch (error: any) {
+
+  } catch (error) {
     console.error('Error uploading medical record:', error);
     return NextResponse.json(
-      { error: 'Failed to upload record' },
+      { error: 'Failed to upload medical record' },
       { status: 500 }
     );
   }
-} 
+}

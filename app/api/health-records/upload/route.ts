@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   try {
     // In a real implementation, this would:
@@ -29,10 +33,14 @@ export async function POST(request: Request) {
       ],
       message: "Files uploaded successfully and added to your health records."
     });
+
   } catch (error) {
-    console.error('Error in health record upload:', error);
+    console.error('Error processing file upload:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to upload health records' },
+      { 
+        success: false,
+        error: 'Failed to process file upload'
+      },
       { status: 500 }
     );
   }
@@ -79,4 +87,4 @@ export async function GET() {
       }
     ]
   });
-} 
+}

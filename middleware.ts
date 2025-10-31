@@ -32,10 +32,8 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: [
-    // Skip all internal paths (_next)
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
-}; 
+// Configure the middleware matcher
+export const matcher = [
+  // Skip all internal paths (_next)
+  '/((?!_next/static|_next/image|favicon.ico).*)',
+];

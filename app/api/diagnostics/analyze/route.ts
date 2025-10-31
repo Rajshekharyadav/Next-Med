@@ -10,7 +10,7 @@ import crypto from 'crypto';
 // Define interfaces for the AI response
 interface Condition {
   name: string;
-  probability: number | string;
+  probability: number;
   description: string;
 }
 
@@ -18,6 +18,11 @@ interface DiagnosisResponse {
   possibleConditions: Condition[];
   recommendedActions: string[];
   disclaimer: string;
+}
+
+interface DiagnosisRequestBody {
+  symptoms: string[];
+  additionalInfo?: string;
 }
 
 // Initialize Google Generative AI
@@ -87,245 +92,150 @@ The entire response must be valid JSON that can be parsed with JSON.parse().
 
 export async function POST(req: NextRequest) {
   try {
-    // Connect to the database
-    console.log('Connecting to MongoDB...');
-    try {
-      const db = await dbConnect();
-      console.log('MongoDB connection established');
-    } catch (dbConnectError) {
-      console.error('Failed to connect to MongoDB:', dbConnectError);
-      
-      // Include debug information in the response
-      return NextResponse.json(
-        { 
-          error: 'Database connection error', 
-          details: `Could not connect to MongoDB. Error: ${dbConnectError instanceof Error ? dbConnectError.message : 'Unknown error'}`, 
-          suggestion: 'Please enable debug mode in the UI to test without a database, or check your MongoDB setup. For local development, make sure MongoDB is installed and running on your machine.',
-          help: 'You can download MongoDB Community Edition from https://www.mongodb.com/try/download/community',
-          userIdProvided: userId,
-          isValidObjectIdFormat: isValidObjectId(userId)
-        },
-        { status: 500 }
-      );
-    }
-
-    // Verify authentication from Authorization header
+    // Authentication check
     const authHeader = req.headers.get('Authorization');
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader?.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
-    const token = authHeader.substring(7); // Remove "Bearer " prefix
-    
-    // Verify the token
+
+    const token = authHeader.substring(7);
     const userId = await verifyToken(token);
-    
     if (!userId) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
-    
-    console.log('Authenticated user ID:', userId);
-    
-    // Convert regular userId to ObjectId format if needed
-    let userObjectId: string | mongoose.Types.ObjectId = userId;
-    
-    // Check if userId is already in ObjectId format
-    if (isValidObjectId(userId)) {
-      console.log('User ID is already in valid ObjectId format');
-    } else {
-      console.log('User ID is not in ObjectId format, creating a deterministic ObjectId');
-      // Create a deterministic ObjectId from the userId string
-      // This ensures the same userId always maps to the same ObjectId
-      const hash = crypto.createHash('md5').update(userId).digest('hex').substring(0, 24);
-      userObjectId = hash;
-      console.log('Generated ObjectId:', userObjectId);
-    }
-    
-    // Validate the final ObjectId
-    if (!isValidObjectId(userObjectId)) {
-      console.error('Invalid MongoDB ObjectId:', userObjectId);
-      return NextResponse.json({ error: 'Invalid user ID format' }, { status: 400 });
-    }
-    
-    // Parse request body
-    const body = await req.json();
-    const { symptoms, additionalInfo } = body;
 
-    if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
-      return NextResponse.json(
-        { error: 'Please provide at least one symptom' },
-        { status: 400 }
-      );
-    }
-
-    // Check if essential environment variables are available
-    if (!process.env.MONGODB_URI) {
-      console.error('Missing MONGODB_URI environment variable');
-      return NextResponse.json(
-        { error: 'Database configuration error' },
-        { status: 500 }
-      );
-    }
-
-    if (!process.env.GEMINI_API_KEY) {
-      console.error('Missing GEMINI_API_KEY environment variable');
-      return NextResponse.json(
-        { error: 'API configuration error' },
-        { status: 500 }
-      );
-    }
-
+    // Convert userId to MongoDB ObjectId
+    let userObjectId: mongoose.Types.ObjectId;
     try {
-      // Send the user's symptoms to analyze
-      console.log('Sending request to Gemini API...');
-      try {
-        // For more reliable JSON parsing, instruct model to respond with structured content
-        const result = await model.generateContent([
-          MEDICAL_PROMPT,
-          `Patient symptoms: ${symptoms.join(', ')}\nAdditional information: ${additionalInfo || 'None provided'}\n\nBased on these symptoms, analyze and provide possible conditions, their likelihood, and recommended actions.`
-        ]);
-        
-        console.log('Received response from Gemini API');
-        const responseText = result.response.text();
-        
-        // Extract the JSON from the response (Gemini might return extra text around the JSON)
-        let aiResponse: DiagnosisResponse;
-        try {
-          // First try direct parsing
-          try {
-            aiResponse = JSON.parse(responseText) as DiagnosisResponse;
-          } catch (directParseError) {
-            // If direct parsing fails, try to extract JSON from text
-            console.log('Direct JSON parsing failed, attempting to extract JSON');
-            
-            // Look for the JSON object pattern
-            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) {
-              console.error('Failed to extract JSON from Gemini response');
-              console.error('Raw response:', responseText);
-              throw new Error('Failed to get properly formatted response from Gemini');
-            }
-            
-            // Try to parse the extracted JSON
-            aiResponse = JSON.parse(jsonMatch[0]) as DiagnosisResponse;
-          }
-          
-          // Validate the response structure
-          if (!aiResponse.possibleConditions || !Array.isArray(aiResponse.possibleConditions) || 
-              !aiResponse.recommendedActions || !Array.isArray(aiResponse.recommendedActions)) {
-            console.error('Invalid response structure from Gemini API');
-            console.error('Response received:', JSON.stringify(aiResponse));
-            throw new Error('Invalid response structure from Gemini API');
-          }
-          
-          // Ensure proper type for probability
-          aiResponse.possibleConditions = aiResponse.possibleConditions.map((condition: Condition) => ({
-            ...condition,
-            probability: typeof condition.probability === 'string' 
-              ? parseFloat(condition.probability) 
-              : condition.probability
-          }));
-          
-        } catch (parseError) {
-          console.error('JSON parsing error:', parseError);
-          console.error('Raw response text:', responseText);
-          throw new Error('Failed to parse Gemini response');
-        }
-
-        // Create a new diagnosis record
-        try {
-          // Convert userId to ObjectId
-          const mongoObjectId = new mongoose.Types.ObjectId(userObjectId);
-          
-          const diagnosis = await Diagnosis.create({
-            userId: mongoObjectId,
-            symptoms,
-            additionalInfo: additionalInfo || '',
-            aiPrediction: aiResponse
-          });
-
-          console.log('Diagnosis created successfully with ID:', diagnosis._id);
-
-          // Return the diagnosis results
-          return NextResponse.json({
-            success: true,
-            diagnosisId: diagnosis._id,
-            prediction: aiResponse
-          });
-        } catch (error: unknown) {
-          console.error('Database error creating diagnosis:', error);
-          
-          // Define a type guard for validation errors
-          const isValidationError = (err: unknown): err is { 
-            name: string;
-            message: string;
-            errors?: Record<string, { message: string }>;
-          } => {
-            return (
-              typeof err === 'object' && 
-              err !== null && 
-              'name' in err && 
-              err.name === 'ValidationError'
-            );
-          };
-          
-          // Check for common MongoDB validation errors
-          if (isValidationError(error)) {
-            console.error('MongoDB validation error:', error.message);
-            
-            // Check which field is failing validation
-            const validationErrors = error.errors 
-              ? Object.keys(error.errors)
-                  .map(field => `${field}: ${error.errors?.[field].message}`)
-                  .join(', ')
-              : 'Unknown validation error';
-            
-            console.error('Validation errors:', validationErrors);
-            
-            // Log the data that's being sent to help debug
-            console.error('Data being sent:', {
-              userId,
-              symptomsCount: symptoms?.length,
-              additionalInfoLength: additionalInfo?.length,
-              aiPredictionStructure: aiResponse ? 
-                `possibleConditions: ${aiResponse.possibleConditions?.length}, recommendedActions: ${aiResponse.recommendedActions?.length}` : 
-                'null'
-            });
-            
-            return NextResponse.json(
-              { error: 'Validation error when saving diagnosis', details: validationErrors },
-              { status: 400 }
-            );
-          }
-          
-          const errorMessage = error instanceof Error ? error.message : 'Unknown database error';
-          throw new Error('Failed to save diagnosis to database: ' + errorMessage);
-        }
-      } catch (error) {
-        console.error('Gemini API error:', error);
-        
-        // Provide a fallback message with instructions
-        return NextResponse.json(
-          { 
-            error: 'Gemini API error: ' + (error instanceof Error ? error.message : 'Unknown error'),
-            details: 'Please try using the debug endpoint instead by checking the Debug Mode checkbox.'
-          },
-          { status: 500 }
-        );
-      }
+      userObjectId = new mongoose.Types.ObjectId(userId);
     } catch (error) {
-      console.error('AI Diagnosis error:', error);
-      return NextResponse.json(
-        { error: error instanceof Error ? error.message : 'Failed to process diagnosis request' },
-        { status: 500 }
-      );
+      return NextResponse.json({
+        error: 'Invalid user ID format',
+        details: 'User ID could not be converted to valid database ID'
+      }, { status: 400 });
+    }
+
+    // Database connection
+    try {
+      await dbConnect();
+    } catch (error) {
+      console.error('Database connection error:', error);
+      return NextResponse.json({
+        error: 'Database connection failed',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      }, { status: 500 });
+    }
+
+    // Request body validation
+    let requestBody: DiagnosisRequestBody;
+    try {
+      requestBody = await req.json();
+    } catch (error) {
+      return NextResponse.json({ 
+        error: 'Invalid request body',
+        details: 'Request body must be valid JSON'
+      }, { status: 400 });
+    }
+
+    if (!requestBody.symptoms?.length) {
+      return NextResponse.json({
+        error: 'Invalid request',
+        details: 'Please provide at least one symptom'
+      }, { status: 400 });
+    }
+
+    // Environment variables check
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({
+        error: 'Server configuration error',
+        details: 'API key is not configured'
+      }, { status: 500 });
+    }
+
+    // Generate AI response
+    try {
+      const result = await model.generateContent([
+        MEDICAL_PROMPT,
+        `Patient symptoms: ${requestBody.symptoms.join(', ')}\nAdditional information: ${requestBody.additionalInfo || 'None provided'}\n\nBased on these symptoms, analyze and provide possible conditions, their likelihood, and recommended actions.`
+      ]);
+
+      const responseText = result.response.text();
+      const aiResponse = parseAIResponse(responseText);
+
+      // Save diagnosis to database
+      const diagnosis = await Diagnosis.create({
+        userId: userObjectId,
+        symptoms: requestBody.symptoms,
+        additionalInfo: requestBody.additionalInfo || '',
+        aiPrediction: aiResponse
+      });
+
+      return NextResponse.json({
+        success: true,
+        diagnosisId: diagnosis._id,
+        prediction: aiResponse
+      });
+
+    } catch (error) {
+      console.error('AI analysis error:', error);
+      return NextResponse.json({
+        error: 'AI analysis failed',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }, { status: 500 });
+    }
+
+  } catch (error) {
+    console.error('Request processing error:', error);
+    return NextResponse.json({
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
+  }
+}
+
+function parseAIResponse(responseText: string): DiagnosisResponse {
+  try {
+    // Try direct parsing first
+    try {
+      const parsed = JSON.parse(responseText) as DiagnosisResponse;
+      validateDiagnosisResponse(parsed);
+      return normalizeResponse(parsed);
+    } catch (directParseError) {
+      // If direct parsing fails, try to extract JSON from text
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('Failed to extract JSON from AI response');
+      }
+
+      const parsed = JSON.parse(jsonMatch[0]) as DiagnosisResponse;
+      validateDiagnosisResponse(parsed);
+      return normalizeResponse(parsed);
     }
   } catch (error) {
-    console.error('AI Diagnosis error:', error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to process diagnosis request' },
-      { status: 500 }
-    );
+    throw new Error(`Failed to parse AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
-} 
+}
+
+function validateDiagnosisResponse(response: any): asserts response is DiagnosisResponse {
+  if (!response.possibleConditions || !Array.isArray(response.possibleConditions)) {
+    throw new Error('Invalid response: missing or invalid possibleConditions');
+  }
+  if (!response.recommendedActions || !Array.isArray(response.recommendedActions)) {
+    throw new Error('Invalid response: missing or invalid recommendedActions');
+  }
+  if (typeof response.disclaimer !== 'string') {
+    throw new Error('Invalid response: missing or invalid disclaimer');
+  }
+}
+
+function normalizeResponse(response: DiagnosisResponse): DiagnosisResponse {
+  return {
+    ...response,
+    possibleConditions: response.possibleConditions.map(condition => ({
+      ...condition,
+      probability: typeof condition.probability === 'string' 
+        ? parseFloat(condition.probability) 
+        : condition.probability
+    }))
+  };
+}

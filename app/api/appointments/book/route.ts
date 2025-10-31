@@ -3,6 +3,10 @@ import { NextResponse } from 'next/server';
 // Import the doctors array to access doctor information
 import { doctors } from '../../../data/doctors';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
@@ -94,4 +98,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

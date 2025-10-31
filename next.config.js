@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'cdn.pixabay.com', 'plus.unsplash.com'],
   },
+  // output: "export"
 };
 
 module.exports = nextConfig; 

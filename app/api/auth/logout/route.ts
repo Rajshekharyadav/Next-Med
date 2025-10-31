@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST() {
   try {
     const cookieStore = cookies();
@@ -41,4 +45,4 @@ export async function POST() {
       { status: 500 }
     );
   }
-} 
+}

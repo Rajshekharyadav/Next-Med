@@ -3,6 +3,10 @@ import bcrypt from 'bcryptjs';
 import clientPromise from '@/lib/mongodb';
 import { cookies } from 'next/headers';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   try {
     // Parse request body
@@ -125,4 +129,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

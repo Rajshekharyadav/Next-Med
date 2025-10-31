@@ -5,6 +5,10 @@ import { cookies } from 'next/headers';
 import fs from 'fs';
 import { unlink } from 'fs/promises';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // DELETE: Remove a medical record
 export async function DELETE(
   request: Request,
@@ -22,68 +26,44 @@ export async function DELETE(
     
     // Authenticate user
     const cookieStore = cookies();
-    const userCookie = cookieStore.get('user');
+    const token = cookieStore.get('next-auth.session-token');
     
-    if (!userCookie || !userCookie.value) {
+    if (!token) {
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
       );
     }
-    
-    // Parse user data from cookie
-    let userData;
-    try {
-      userData = JSON.parse(userCookie.value);
-    } catch (error) {
-      return NextResponse.json(
-        { error: 'Invalid user data' },
-        { status: 401 }
-      );
-    }
-    
-    const userId = userData._id;
-    
+
     // Connect to MongoDB
     const client = await clientPromise;
     const db = client.db('nextmed');
     const records = db.collection('medicalRecords');
-    
-    // Find the record to ensure it belongs to the user
-    const recordToDelete = await records.findOne({
-      _id: new ObjectId(recordId),
-      userId: new ObjectId(userId)
-    });
-    
-    if (!recordToDelete) {
+
+    // Find the record first to get file path
+    const record = await records.findOne({ _id: new ObjectId(recordId) });
+
+    if (!record) {
       return NextResponse.json(
-        { error: 'Record not found or access denied' },
+        { error: 'Record not found' },
         { status: 404 }
       );
     }
-    
-    // Delete the file from disk if it exists
-    if (recordToDelete.filePath) {
-      try {
-        await unlink(recordToDelete.filePath);
-      } catch (error) {
-        console.error('Error deleting file:', error);
-        // Continue with removing database entry even if file deletion fails
-      }
+
+    // Delete file if exists
+    if (record.filePath && fs.existsSync(record.filePath)) {
+      await unlink(record.filePath);
     }
-    
-    // Delete the record from the database
+
+    // Delete record from database
     await records.deleteOne({ _id: new ObjectId(recordId) });
-    
-    return NextResponse.json({
-      success: true,
-      message: 'Record deleted successfully'
-    });
-  } catch (error: any) {
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
     console.error('Error deleting medical record:', error);
     return NextResponse.json(
-      { error: 'Failed to delete record' },
+      { error: 'Failed to delete medical record' },
       { status: 500 }
     );
   }
-} 
+}

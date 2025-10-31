@@ -18,17 +18,46 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+/* 3D Canvas Styles */
+canvas {
+  outline: none;
+  touch-action: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance optimizations for 3D */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 @layer components {
   .container-custom {
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .btn-primary {
-    @apply px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-sm;
+    @apply px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-600 transition duration-300 shadow-sm transform-gpu;
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-white text-primary border border-primary rounded-md hover:bg-gray-50 transition duration-300 shadow-sm;
+    @apply px-4 py-2 bg-white text-primary border border-primary rounded-md hover:bg-gray-50 transition duration-300 shadow-sm transform-gpu;
+  }
+
+  .btn-3d {
+    @apply px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 hover:-translate-y-1 transform-gpu;
   }
 
   .section-heading {
@@ -36,6 +65,48 @@ body {
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-lg;
+    @apply bg-white rounded-lg shadow-card p-6 transition-all duration-300 hover:shadow-lg transform-gpu;
+  }
+
+  .card-3d {
+    @apply bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 transform-gpu;
+  }
+
+  .hero-gradient {
+    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Loading animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(79, 70, 229, 0.6); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive 3D adjustments */
+@media (max-width: 768px) {
+  .transform-gpu {
+    transform: none;
+  }
+  
+  canvas {
+    max-height: 300px;
   }
 } 

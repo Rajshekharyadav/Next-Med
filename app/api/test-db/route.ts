@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import testMongoDBConnection from '@/lib/testConnection';
 
+// Add dynamic route configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET() {
   try {
     if (!process.env.MONGODB_URI) {
@@ -38,4 +42,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}
