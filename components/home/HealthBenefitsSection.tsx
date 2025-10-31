@@ -91,7 +91,6 @@ const item = {
   }
 };
 
-// New animations for enhanced UI
 const pulseAnimation = {
   initial: { scale: 1 },
   animate: { 
@@ -117,64 +116,24 @@ const floatAnimation = {
 };
 
 const HealthBenefitsSection = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(2);
+
+  const nextCard = () => {
+    setCurrentIndex((prev) => (prev + 1) % benefits.length);
+  };
+
+  const prevCard = () => {
+    setCurrentIndex((prev) => (prev - 1 + benefits.length) % benefits.length);
+  };
+
+  const getVisibleCards = () => {
+    const prev = (currentIndex - 1 + benefits.length) % benefits.length;
+    const next = (currentIndex + 1) % benefits.length;
+    return [prev, currentIndex, next];
+  };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-      {/* Enhanced background decorations */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-indigo-100/70 to-purple-100/70 rounded-full opacity-70 blur-3xl -z-10 transform translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-blue-100/70 to-indigo-100/70 rounded-full opacity-70 blur-3xl -z-10 transform -translate-x-1/2 translate-y-1/2"></div>
-      
-      {/* Enhanced animated elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-2 w-2 rounded-full bg-primary/30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, Math.random() * -150 - 50, 0],
-              opacity: [0, Math.random() * 0.5 + 0.5, 0],
-              scale: [0, Math.random() * 2 + 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 5 + 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
-        
-        {/* Decorative circles */}
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={`circle-${i}`}
-            className="absolute rounded-full opacity-10"
-            style={{
-              left: `${20 + i * 25}%`,
-              top: `${30 + i * 20}%`,
-              width: `${150 - i * 30}px`,
-              height: `${150 - i * 30}px`,
-              background: `radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 70%)`,
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.1, 0.2, 0.1],
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-      
+    <section className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div 
@@ -190,7 +149,7 @@ const HealthBenefitsSection = () => {
           </motion.div>
           
           <motion.h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -200,7 +159,7 @@ const HealthBenefitsSection = () => {
           </motion.h2>
           
           <motion.p 
-            className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -210,114 +169,89 @@ const HealthBenefitsSection = () => {
           </motion.p>
         </div>
         
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {benefits.map((benefit, index) => (
-            <motion.div 
-              key={benefit.title}
-              className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden group border border-gray-100/40 ${hoveredCard === index ? 'ring-2 ring-primary/20 scale-[1.02]' : ''}`}
-              variants={item}
-              whileHover={{ y: -8 }}
-              onHoverStart={() => {
-                setActiveIndex(index);
-                setHoveredCard(index);
-              }}
-              onHoverEnd={() => {
-                setActiveIndex(null);
-                setHoveredCard(null);
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="p-7 relative">
-                {/* Background pattern */}
-                <div className="absolute right-0 top-0 h-20 w-20 opacity-5">
-                  <svg className="w-full h-full" viewBox="0 0 80 80" fill="none">
-                    <path d="M80 0H0V80H80V0Z" fill="url(#paint0_radial)" />
-                    <defs>
-                      <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 40) rotate(90) scale(40)">
-                        <stop stopColor="currentColor" />
-                        <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-                      </radialGradient>
-                    </defs>
-                  </svg>
-                </div>
-                
-                <motion.div 
-                  className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-white bg-gradient-to-r ${benefit.color} transform transition-all duration-300 shadow-lg`}
-                  whileHover={{ scale: 1.1 }}
-                  animate={hoveredCard === index ? pulseAnimation.animate : pulseAnimation.initial}
-                >
-                  {benefit.icon}
-                </motion.div>
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                  {benefit.title}
-                  {activeIndex === index && (
-                    <motion.span 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="ml-2 text-xs font-normal bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full"
-                    >
-                      {benefit.stats}
-                    </motion.span>
-                  )}
-                </h3>
-                
-                <p className="text-gray-600">{benefit.description}</p>
-              </div>
-              
-              <div className="bg-gradient-to-r from-gray-50 to-white p-4 border-t border-gray-100 flex justify-between items-center">
-                <a href="#" className="text-primary flex items-center text-sm font-medium group-hover:underline">
-                  Learn more
-                  <motion.svg 
-                    className="w-4 h-4 ml-1" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    xmlns="http://www.w3.org/2000/svg"
-                    initial={{ x: 0 }}
-                    animate={{ x: activeIndex === index ? 3 : 0 }}
-                    transition={{ repeat: activeIndex === index ? Infinity : 0, repeatType: "reverse", duration: 0.6 }}
+        <div className="flex justify-center items-center gap-8 mb-12">
+          {getVisibleCards().map((cardIndex, position) => {
+            const benefit = benefits[cardIndex];
+            const isCenter = position === 1;
+            return (
+              <motion.div
+                key={cardIndex}
+                className={`relative p-8 rounded-3xl transition-all duration-500 ${
+                  isCenter 
+                    ? 'bg-black/40 backdrop-blur-md text-white shadow-2xl scale-110 z-10 border border-white/20' 
+                    : 'bg-black/20 backdrop-blur-sm text-white/60 scale-95 opacity-50 blur-sm border border-white/10'
+                } w-80 h-64 flex flex-col justify-center`}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: isCenter ? 1 : 0.5, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {isCenter && (
+                  <motion.div 
+                    className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden"
+                    animate={{ 
+                      boxShadow: [
+                        '0 0 20px rgba(59, 130, 246, 0.3)',
+                        '0 0 40px rgba(59, 130, 246, 0.6)',
+                        '0 0 20px rgba(59, 130, 246, 0.3)'
+                      ]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </motion.svg>
-                </a>
+                    <img 
+                      src={`/images/Crads-img/${benefit.title}.jpg`}
+                      alt={benefit.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                )}
                 
-                <div className="flex items-center space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
+                <div className="text-center">
+                  <h3 className={`text-xl font-bold mb-4 ${isCenter ? 'text-white' : 'text-white/60'}`}>
+                    {benefit.title}
+                  </h3>
+                  
+                  <div className={`w-16 h-px mx-auto mb-4 ${isCenter ? 'bg-white/30' : 'bg-white/20'}`}></div>
+                  
+                  <p className={`text-sm leading-relaxed ${isCenter ? 'text-white/80' : 'text-white/40'}`}>
+                    {benefit.description}
+                  </p>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+        
+        <div className="flex justify-center gap-4 mb-12">
+          <motion.button
+            onClick={prevCard}
+            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </motion.button>
+          
+          <motion.button
+            onClick={nextCard}
+            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </motion.button>
+        </div>
         
         <motion.div 
-          className="mt-24 text-center bg-gradient-to-br from-indigo-50 to-blue-50 p-10 rounded-2xl shadow-sm border border-indigo-100/50 max-w-4xl mx-auto relative overflow-hidden"
+          className="mt-24 text-center bg-black/30 backdrop-blur-md p-10 rounded-2xl shadow-sm border border-white/10 max-w-4xl mx-auto relative overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.7 }}
         >
-          {/* Animated pattern background */}
-          <div className="absolute inset-0 opacity-10">
-            <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r="1" fill="currentColor" />
-              </pattern>
-              <rect width="100" height="100" fill="url(#grid)" />
-            </svg>
-          </div>
-          
-          {/* Floating health icon */}
           <motion.div 
             className="absolute -top-6 -right-6 text-primary/20"
             variants={floatAnimation}
@@ -330,13 +264,13 @@ const HealthBenefitsSection = () => {
           </motion.div>
           
           <div className="max-w-xl mx-auto relative z-10">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to experience the future of healthcare?</h3>
-            <p className="text-gray-600 mb-8">Join over 50,000 patients who have transformed their healthcare experience with NextMed's innovative platform.</p>
+            <h3 className="text-2xl font-bold text-white mb-4">Ready to experience the future of healthcare?</h3>
+            <p className="text-white/80 mb-8">Join over 50,000 patients who have transformed their healthcare experience with NextMed's innovative platform.</p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a 
                 href="/about" 
-                className="inline-flex items-center px-6 py-3.5 bg-gradient-to-r from-primary to-indigo-600 text-white rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 hover:from-primary/90 hover:to-indigo-600/90"
+                className="inline-flex items-center px-6 py-3.5 bg-white/10 backdrop-blur-md text-white rounded-lg shadow-lg border border-white/20 hover:bg-white/20 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -348,8 +282,8 @@ const HealthBenefitsSection = () => {
               
               <motion.a 
                 href="/demo" 
-                className="inline-flex items-center px-6 py-3.5 bg-white text-primary border border-primary/20 rounded-lg shadow-sm hover:bg-gray-50 transition-all duration-300"
-                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
+                className="inline-flex items-center px-6 py-3.5 bg-black/20 backdrop-blur-md text-white border border-white/20 rounded-lg shadow-sm hover:bg-black/30 transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >
                 Watch Demo

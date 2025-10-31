@@ -1,0 +1,19 @@
+# Skin Vision Analysis API Test
+
+# Test the root endpoint
+
+GET http://localhost:8000/
+
+###
+
+# Test the skin lesion prediction endpoint
+# Note: You'll need to replace 'test_image.jpg' with the path to an actual image file
+POST http://localhost:8000/predict-skin-lesion
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test_image.jpeg"
+Content-Type: image/jpeg
+
+< ./test_image.jpeg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

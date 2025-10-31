@@ -7,31 +7,14 @@ import Link from 'next/link';
 
 interface AnalysisResult {
   success: boolean;
-  prediction: string;
-  class: string;
-  confidence: number;
-  recommendedAction: string;
-  processingTime?: number;
-  error?: string;
-  metadata?: Record<string, any>;
-  details?: {
-    possibleConditions: Array<{
-      name: string;
-      probability: number;
-      description: string;
-      category: string;
-    }>;
-    riskFactors: string[];
+  analysis: {
+    condition: string;
+    confidence: number;
     recommendations: string[];
-    additionalInfo?: {
-      abcdRule: {
-        asymmetry: boolean;
-        borderIrregularity: boolean;
-        colorVariation: boolean;
-        diameter: boolean;
-      }
-    }
+    severity: string;
+    possibleCauses: string[];
   };
+  error?: string;
 }
 
 export default function SkinVisionPage() {
@@ -69,7 +52,7 @@ export default function SkinVisionPage() {
       const formData = new FormData();
       formData.append('image', file);
       
-      const response = await fetch('/api/skin-vision/analyze', {
+      const response = await fetch('/api/diagnostics/skin-analysis', {
         method: 'POST',
         body: formData,
       });
@@ -101,32 +84,30 @@ export default function SkinVisionPage() {
     setSelectedFile(null);
   };
 
-  const calculateTotalScore = () => {
-    if (!result?.details?.additionalInfo?.abcdRule) return 0;
-    
-    const { asymmetry, borderIrregularity, colorVariation, diameter } = result.details.additionalInfo.abcdRule;
-    let score = 0;
-    if (asymmetry) score += 1;
-    if (borderIrregularity) score += 1;
-    if (colorVariation) score += 1;
-    if (diameter) score += 1;
-    return score;
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-blue-100 text-blue-800';
+    }
   };
 
-  const getScoreColor = (score: number) => {
-    if (score <= 1) return 'text-green-600';
-    if (score === 2) return 'text-yellow-600';
-    if (score === 3) return 'text-orange-500';
-    return 'text-red-600';
+  const getSeverityBgColor = (severity: string) => {
+    switch (severity) {
+      case 'high': return 'bg-red-50 border border-red-200';
+      case 'medium': return 'bg-yellow-50 border border-yellow-200';
+      case 'low': return 'bg-green-50 border border-green-200';
+      default: return 'bg-blue-50 border border-blue-200';
+    }
   };
 
-  const getScoreText = (score: number) => {
-    if (score <= 1) return 'Low concern';
-    if (score === 2) return 'Monitor';
-    if (score === 3) return 'Moderate concern';
-    return 'High concern';
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 80) return 'bg-green-500';
+    if (confidence >= 60) return 'bg-yellow-500';
+    return 'bg-red-500';
   };
-  
+
   const toggleEducationalContent = () => {
     setShowEducationalContent(!showEducationalContent);
   };
@@ -144,7 +125,7 @@ export default function SkinVisionPage() {
             Skin Vision <span className="text-primary">Analysis</span>
           </h1>
           <p className="text-lg text-gray-700 mb-10 text-center max-w-2xl mx-auto">
-            Our AI-powered skin analysis tool uses VGG16 deep learning to help identify potential skin conditions from your photos.
+            Our AI-powered skin analysis tool uses a ResNet deep learning model to help identify potential skin conditions from your photos.
           </p>
 
           <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
@@ -214,11 +195,10 @@ export default function SkinVisionPage() {
                     Upload different image
                   </button>
 
-                  {result && !analyzing && (
+                  {result && !analyzing && result.success && (
                     <div className="mt-4">
                       <div className="text-xs text-gray-500 flex items-center justify-between">
-                        <span>Processed in {result.processingTime?.toFixed(2) || '0.00'}s</span>
-                        <span>Confidence: {result.confidence}%</span>
+                        <span>Confidence: {result.analysis.confidence}%</span>
                       </div>
                     </div>
                   )}
@@ -246,169 +226,53 @@ export default function SkinVisionPage() {
                         Try Again
                       </button>
                     </div>
-                  ) : result ? (
+                  ) : result && result.success ? (
                     <div className="h-full flex flex-col">
                       <div className="flex items-center mb-4">
                         <h3 className="text-2xl font-medium text-gray-900">Analysis Results</h3>
-                        <span className={`ml-auto px-3 py-1 text-sm font-medium rounded-full ${
-                          result.class === 'malignant' 
-                            ? 'bg-red-100 text-red-800' 
-                            : 'bg-green-100 text-green-800'
-                        }`}>
-                          {result.class === 'malignant' ? 'Potential Concern' : 'Likely Benign'}
+                        <span className={`ml-auto px-3 py-1 text-sm font-medium rounded-full ${getSeverityColor(result.analysis.severity)}`}>
+                          {result.analysis.condition}
                         </span>
                       </div>
                       
-                      <div className={`mb-6 p-4 rounded-lg ${
-                        result.class === 'malignant' 
-                          ? 'bg-red-50 border border-red-200' 
-                          : 'bg-green-50 border border-green-200'
-                      }`}>
-                        <h4 className="font-medium mb-1">{result.prediction}</h4>
+                      <div className={`mb-6 p-4 rounded-lg ${getSeverityBgColor(result.analysis.severity)}`}>
+                        <h4 className="font-medium mb-1">{result.analysis.condition}</h4>
                         <div className="mb-3 flex items-center">
                           <div className="w-full bg-gray-200 rounded-full h-2.5 mr-2">
                             <div 
-                              className={`h-2.5 rounded-full ${
-                                result.class === 'malignant' 
-                                  ? 'bg-red-500' 
-                                  : 'bg-green-500'
-                              }`} 
-                              style={{ width: `${result.confidence}%` }}
+                              className={`h-2.5 rounded-full ${getConfidenceColor(result.analysis.confidence)}`} 
+                              style={{ width: `${result.analysis.confidence}%` }}
                             ></div>
                           </div>
-                          <span className="text-sm whitespace-nowrap">{result.confidence}% confidence</span>
+                          <span className="text-sm whitespace-nowrap">{result.analysis.confidence}% confidence</span>
                         </div>
                         <p className="text-sm">
-                          {result.recommendedAction}
+                          {result.analysis.recommendations[0]}
                         </p>
                       </div>
                       
-                      {result.details && (
-                        <>
-                          <div className="mb-6">
-                            <div className="flex justify-between items-center mb-3">
-                              <h4 className="font-medium">ABCD Assessment</h4>
-                              <button 
-                                onClick={toggleEducationalContent}
-                                className="text-primary text-sm flex items-center hover:underline"
-                              >
-                                {showEducationalContent ? 'Hide' : 'Learn more'} 
-                                <FiInfo size={14} className="ml-1" />
-                              </button>
-                            </div>
-                            
-                            {showEducationalContent && (
-                              <div className="bg-blue-50 p-3 rounded-lg mb-3 text-sm">
-                                <p className="mb-2 font-medium">The ABCD Rule for Skin Cancer Detection:</p>
-                                <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                                  <li><span className="font-medium">A</span>symmetry: One half of the spot is different from the other half</li>
-                                  <li><span className="font-medium">B</span>order: Irregular, ragged, notched, or blurred edges</li>
-                                  <li><span className="font-medium">C</span>olor: Variety of colors or uneven distribution of color</li>
-                                  <li><span className="font-medium">D</span>iameter: Larger than 6mm (about the size of a pencil eraser)</li>
-                                </ul>
-                              </div>
-                            )}
-                            
-                            {result.details.additionalInfo?.abcdRule && (
-                              <div className="grid grid-cols-2 gap-3 mb-3">
-                                <div className={`p-3 rounded-lg ${result.details.additionalInfo.abcdRule.asymmetry ? 'bg-red-50' : 'bg-green-50'}`}>
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-medium">Asymmetry</span>
-                                    <span className={result.details.additionalInfo.abcdRule.asymmetry ? 'text-red-600' : 'text-green-600'}>
-                                      {result.details.additionalInfo.abcdRule.asymmetry ? 'Present' : 'Not Detected'}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className={`p-3 rounded-lg ${result.details.additionalInfo.abcdRule.borderIrregularity ? 'bg-red-50' : 'bg-green-50'}`}>
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-medium">Border Irregularity</span>
-                                    <span className={result.details.additionalInfo.abcdRule.borderIrregularity ? 'text-red-600' : 'text-green-600'}>
-                                      {result.details.additionalInfo.abcdRule.borderIrregularity ? 'Present' : 'Not Detected'}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className={`p-3 rounded-lg ${result.details.additionalInfo.abcdRule.colorVariation ? 'bg-red-50' : 'bg-green-50'}`}>
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-medium">Color Variation</span>
-                                    <span className={result.details.additionalInfo.abcdRule.colorVariation ? 'text-red-600' : 'text-green-600'}>
-                                      {result.details.additionalInfo.abcdRule.colorVariation ? 'Present' : 'Not Detected'}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className={`p-3 rounded-lg ${result.details.additionalInfo.abcdRule.diameter ? 'bg-red-50' : 'bg-green-50'}`}>
-                                  <div className="flex justify-between items-center">
-                                    <span className="font-medium">Diameter &gt;6mm</span>
-                                    <span className={result.details.additionalInfo.abcdRule.diameter ? 'text-red-600' : 'text-green-600'}>
-                                      {result.details.additionalInfo.abcdRule.diameter ? 'Present' : 'Not Detected'}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {result.details.additionalInfo?.abcdRule && (
-                              <div className={`p-3 rounded-lg text-center ${
-                                calculateTotalScore() >= 3 ? 'bg-red-50' : calculateTotalScore() >= 1 ? 'bg-yellow-50' : 'bg-green-50'
-                              }`}>
-                                <div className="text-sm text-gray-700">ABCD Total Score</div>
-                                <div className={`text-2xl font-bold ${getScoreColor(calculateTotalScore())}`}>
-                                  {calculateTotalScore()}/4
-                                </div>
-                                <div className="text-sm font-medium mt-1">
-                                  {getScoreText(calculateTotalScore())}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="mb-6">
-                            <h4 className="font-medium mb-3">Possible Conditions</h4>
-                            <div className="space-y-3">
-                              {result.details.possibleConditions.map((condition, index) => (
-                                <div key={index} className={`p-3 rounded-lg ${
-                                  condition.category === 'malignant' ? 'bg-red-50 border border-red-100' : 'bg-gray-50 border border-gray-100'
-                                }`}>
-                                  <div className="flex justify-between items-center mb-1">
-                                    <span className="font-medium flex items-center">
-                                      {condition.name}
-                                      {condition.category === 'malignant' && (
-                                        <FiAlertTriangle className="ml-2 text-amber-500" />
-                                      )}
-                                    </span>
-                                    <span className="text-sm text-gray-500">{Math.round(condition.probability * 100)}%</span>
-                                  </div>
-                                  <p className="text-sm text-gray-600">{condition.description}</p>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          {result.details.riskFactors.length > 0 && (
-                            <div className="mb-6">
-                              <h4 className="font-medium mb-2">Identified Risk Factors</h4>
-                              <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
-                                {result.details.riskFactors.map((factor, index) => (
-                                  <li key={index}>{factor}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          <div className="mb-6">
-                            <h4 className="font-medium mb-2">Recommendations</h4>
-                            <ul className="space-y-2">
-                              {result.details.recommendations.map((recommendation, index) => (
-                                <li key={index} className="flex items-start">
-                                  <svg className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                  </svg>
-                                  <span className="text-gray-700">{recommendation}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </>
-                      )}
+                      <div className="mb-6">
+                        <h4 className="font-medium mb-3">Recommendations</h4>
+                        <ul className="space-y-2">
+                          {result.analysis.recommendations.map((recommendation, index) => (
+                            <li key={index} className="flex items-start">
+                              <svg className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              <span className="text-gray-700">{recommendation}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="mb-6">
+                        <h4 className="font-medium mb-2">Possible Causes</h4>
+                        <ul className="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                          {result.analysis.possibleCauses.map((cause, index) => (
+                            <li key={index}>{cause}</li>
+                          ))}
+                        </ul>
+                      </div>
                       
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h4 className="font-medium flex items-center mb-2">
@@ -541,4 +405,4 @@ export default function SkinVisionPage() {
       </div>
     </div>
   );
-} 
+}

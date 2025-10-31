@@ -10,49 +10,33 @@ export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   try {
-    // Parse the uploaded image from the form data
-    const formData = await request.formData();
-    const file = formData.get('image') as File | null;
+    // In a real implementation, this would:
+    // 1. Parse the uploaded image from the form data
+    // 2. Process the image with an AI model or API
+    // 3. Return analysis results
 
-    if (!file) {
-      return NextResponse.json(
-        { success: false, error: 'No image provided' },
-        { status: 400 }
-      );
-    }
+    // Simulating processing delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Save the uploaded file temporarily
-    const tempDir = path.join(process.cwd(), 'uploads');
-    try {
-      await fs.promises.mkdir(tempDir, { recursive: true });
-    } catch (error) {
-      console.error('Error creating temp directory:', error);
-    }
-
-    const tempFilePath = path.join(tempDir, `${Date.now()}-${file.name}`);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await fs.promises.writeFile(tempFilePath, buffer);
-
-    try {
-      // Call the AI model for prediction using VGG16
-      const analysis = await predict(tempFilePath);
-
-      // Clean up the temporary file
-      await unlink(tempFilePath);
-
-      return NextResponse.json({
-        success: true,
-        analysis
-      });
-    } catch (error) {
-      // Clean up on error
-      try {
-        await unlink(tempFilePath);
-      } catch (unlinkError) {
-        console.error('Error deleting temp file:', unlinkError);
+    // Mock response
+    return NextResponse.json({
+      success: true,
+      analysis: {
+        condition: "Mild Acne",
+        confidence: 0.89,
+        recommendations: [
+          "Use a gentle cleanser twice daily",
+          "Apply a benzoyl peroxide spot treatment",
+          "Consider consulting a dermatologist if condition persists"
+        ],
+        severity: "low",
+        possibleCauses: [
+          "Hormonal changes",
+          "Buildup of dead skin cells",
+          "Excess oil production"
+        ]
       }
-      throw error;
-    }
+    });
   } catch (error) {
     console.error('Error analyzing skin image:', error);
     return NextResponse.json(
