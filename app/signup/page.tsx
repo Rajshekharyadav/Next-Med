@@ -147,248 +147,242 @@ const SignupContent = () => {
         )}
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="dark-glass-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="name" className="sr-only">Full name</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiUser className="h-5 w-5 text-gray-400" />
+          <div className="dark-glass-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="rounded-md shadow-sm -space-y-px">
+                <div>
+                  <label htmlFor="name" className="sr-only">Full name</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiUser className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-t-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Full name"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autoComplete="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-t-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                  placeholder="Full name"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="h-5 w-5 text-gray-400" />
+                <div>
+                  <label htmlFor="email" className="sr-only">Email address</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiMail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Email address"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="phone" className="sr-only">Phone number</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiPhone className="h-5 w-5 text-gray-400" />
+                <div>
+                  <label htmlFor="phone" className="sr-only">Phone number</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiPhone className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Phone number"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Phone number"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="dateOfBirth" className="sr-only">Date of birth</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiCalendar className="h-5 w-5 text-gray-400" />
+                <div>
+                  <label htmlFor="dateOfBirth" className="sr-only">Date of birth</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiCalendar className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="dateOfBirth"
+                      name="dateOfBirth"
+                      type="date"
+                      value={formData.dateOfBirth}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="dateOfBirth"
-                  name="dateOfBirth"
-                  type="date"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="gender" className="sr-only">Gender</label>
-              <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-              >
-                <option value="">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="address.street" className="sr-only">Street address</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMapPin className="h-5 w-5 text-gray-400" />
+                <div>
+                  <label htmlFor="gender" className="sr-only">Gender</label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
-                <input
-                  id="address.street"
-                  name="address.street"
-                  type="text"
-                  value={formData.address.street}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Street address"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <input
-                  id="address.city"
-                  name="address.city"
-                  type="text"
-                  value={formData.address.city}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="City"
-                />
-              </div>
-              <div>
-                <input
-                  id="address.state"
-                  name="address.state"
-                  type="text"
-                  value={formData.address.state}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="State"
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <input
-                  id="address.zipCode"
-                  name="address.zipCode"
-                  type="text"
-                  value={formData.address.zipCode}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="ZIP code"
-                />
-              </div>
-              <div>
-                <input
-                  id="address.country"
-                  name="address.country"
-                  type="text"
-                  value={formData.address.country}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Country"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-gray-400" />
+                <div>
+                  <label htmlFor="address.street" className="sr-only">Street address</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiMapPin className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="address.street"
+                      name="address.street"
+                      type="text"
+                      value={formData.address.street}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Street address"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="confirmPassword" className="sr-only">Confirm password</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-5 w-5 text-gray-400" />
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <input
+                      id="address.city"
+                      name="address.city"
+                      type="text"
+                      value={formData.address.city}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="City"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="address.state"
+                      name="address.state"
+                      type="text"
+                      value={formData.address.state}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="State"
+                    />
+                  </div>
                 </div>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-b-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
-                  placeholder="Confirm password"
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <input
+                      id="address.zipCode"
+                      name="address.zipCode"
+                      type="text"
+                      value={formData.address.zipCode}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="ZIP code"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="address.country"
+                      name="address.country"
+                      type="text"
+                      value={formData.address.country}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Country"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="password" className="sr-only">Password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiLock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Password"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="confirmPassword" className="sr-only">Confirm password</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FiLock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-b-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
+                      placeholder="Confirm password"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div>
-            <div className="flex items-center mt-4">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                checked={formData.terms}
-                onChange={(e) =>
-                  setFormData({ ...formData, terms: e.target.checked })
-                }
-                className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-700 rounded bg-gray-800/50"
-              />
-              <label
-                htmlFor="terms"
-                className="ml-2 block text-sm text-white"
-              >
-                I agree to the{" "}
-                <a href="#" className="text-blue-400 hover:text-blue-300">
-                  Terms of Service and Privacy Policy
-                </a>
-              </label>
-            </div>
-          </div>
+              <div>
+                <div className="flex items-center mt-4">
+                  <input
+                    id="terms"
+                    name="terms"
+                    type="checkbox"
+                    checked={formData.terms}
+                    onChange={(e) =>
+                      setFormData({ ...formData, terms: e.target.checked })
+                    }
+                    className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-700 rounded bg-gray-800/50"
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="ml-2 block text-sm text-white"
+                  >
+                    I agree to the{" "}
+                    <a href="#" className="text-blue-400 hover:text-blue-300">
+                      Terms of Service and Privacy Policy
+                    </a>
+                  </label>
+                </div>
+              </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white dark-glass-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
-            >
-              {isLoading ? (
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              ) : null}
-              Create account
-            </button>
+              <div>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white dark-glass-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
+                >
+                  {isLoading ? (
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : null}
+                  Create account
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-        </form>
-        </div>
         </div>
       </div>
     </div>
@@ -396,9 +390,5 @@ const SignupContent = () => {
 };
 
 export default function SignupPage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <SignupContent />
-    </div>
-  );
+  return <SignupContent />;
 }

@@ -35,15 +35,6 @@ async function ensureUploadsDir() {
 // POST: Upload a medical record
 export async function POST(request: Request) {
   try {
-    const cookieStore = cookies();
-    const token = cookieStore.get('next-auth.session-token');
-    
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
 
     const formData = await request.formData();
     const uploadedFile = formData.get('file') as File | null;
@@ -75,12 +66,13 @@ export async function POST(request: Request) {
     // Save record to database
     const client = await clientPromise;
     const db = client.db('nextmed');
-    const records = db.collection<MedicalRecord>('medicalRecords');
+    const records = db.collection('medicalRecords');
 
-    const newRecord: MedicalRecord = {
-      userId: 'demo-user', // In real app, get from authenticated session
+    const fileUrl = `/uploads/${fileName}`;
+    const newRecord = {
+      userId: 'demo-user',
       fileName: uploadedFile.name,
-      filePath,
+      fileUrl,
       description,
       recordType,
       fileSize: uploadedFile.size,
@@ -88,13 +80,13 @@ export async function POST(request: Request) {
       uploadDate: new Date(),
     };
 
-    await records.insertOne(newRecord);
+    const result = await records.insertOne(newRecord);
 
     return NextResponse.json({
       success: true,
       record: {
-        ...newRecord,
-        filePath: `/uploads/${fileName}` // Public URL
+        _id: result.insertedId,
+        ...newRecord
       }
     });
 

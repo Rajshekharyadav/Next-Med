@@ -176,77 +176,104 @@ const AppointmentPage = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 py-8 relative overflow-hidden">
+      {/* Animated Medical Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-8 h-8 text-teal-400/20 animate-bounce" style={{animationDelay: '0s', animationDuration: '3s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div className="absolute top-32 right-20 w-6 h-6 text-blue-400/30 animate-pulse" style={{animationDelay: '1s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3V8zM4 8h2v8H4V8zm3 0h2v8H7V8zm3 0h2v8h-2V8z"/></svg>
+        </div>
+        <div className="absolute bottom-20 left-1/4 w-10 h-10 text-emerald-400/20 animate-spin" style={{animationDelay: '2s', animationDuration: '8s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <div className="absolute top-1/2 right-10 w-7 h-7 text-cyan-400/25 animate-bounce" style={{animationDelay: '0.5s', animationDuration: '4s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div className="absolute bottom-32 right-1/3 w-5 h-5 text-blue-500/25 animate-pulse" style={{animationDelay: '1.5s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div className="absolute top-20 left-1/3 w-4 h-4 text-emerald-500/30 animate-ping" style={{animationDelay: '2.5s'}}>
+          <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto">
-          <div className="mb-8">
-            <Link href="/" className="inline-flex items-center text-primary hover:underline">
-              <FiArrowLeft className="mr-2" />
-              Back to Home
-            </Link>
-            <h1 className="text-3xl font-bold text-gray-900 mt-4">Book an Appointment</h1>
-            <p className="text-gray-600 mt-2">
-              Select a doctor, date, and time to schedule your consultation
-            </p>
+          <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 mb-6 border border-gray-600/40 shadow-lg relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-blue-500/10 to-emerald-500/10 animate-pulse"></div>
+            <div className="relative z-10">
+              <Link href="/" className="inline-flex items-center text-teal-400 hover:text-teal-300 mb-4">
+                <FiArrowLeft className="mr-2" />
+                Back to Home
+              </Link>
+              <h1 className="text-3xl font-bold text-white">Book an Appointment</h1>
+              <p className="text-gray-300 mt-2">
+                Select a doctor, date, and time to schedule your consultation
+              </p>
+            </div>
           </div>
           
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+            <div className="bg-red-900/30 backdrop-blur-sm border border-red-700/50 rounded-xl p-4 mb-6">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
+                  <p className="text-sm text-red-300">{error}</p>
                 </div>
               </div>
             </div>
           )}
           
           {success && (
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+            <div className="bg-green-900/30 backdrop-blur-sm border border-green-700/50 rounded-xl p-4 mb-6">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-green-700">{success}</p>
+                  <p className="text-sm text-green-300">{success}</p>
                 </div>
               </div>
             </div>
           )}
           
           {!isLoggedIn && (
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+            <div className="bg-blue-900/30 backdrop-blur-sm border border-blue-700/50 rounded-xl p-4 mb-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-blue-700">
-                    <Link href="/login" className="font-medium underline">Login</Link> or <Link href="/signup" className="font-medium underline">create an account</Link> to manage your appointments more easily.
+                  <p className="text-sm text-blue-300">
+                    <Link href="/login" className="font-medium underline text-blue-400 hover:text-blue-300">Login</Link> or <Link href="/signup" className="font-medium underline text-blue-400 hover:text-blue-300">create an account</Link> to manage your appointments more easily.
                   </p>
                 </div>
               </div>
             </div>
           )}
           
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+          <form onSubmit={handleSubmit} className="bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-600/40 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-blue-500/10 animate-pulse"></div>
+            <div className="relative z-10">
             {/* Doctor Selection */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-medium mb-2">
+              <label className="block text-white font-medium mb-2">
                 Select Doctor
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {isLoading ? (
                   <div className="col-span-2 flex justify-center py-8">
-                    <svg className="animate-spin h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-8 w-8 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -255,19 +282,19 @@ const AppointmentPage = () => {
                   doctors.map((doctor) => (
                     <div
                       key={doctor.id}
-                      className={`border rounded-lg p-4 cursor-pointer transition ${
+                      className={`border rounded-lg p-4 cursor-pointer transition backdrop-blur-sm ${
                         selectedDoctor === doctor.id
-                          ? 'border-primary bg-blue-50'
-                          : 'border-gray-200 hover:border-primary'
+                          ? 'border-teal-500 bg-teal-600/20'
+                          : 'border-gray-600 bg-gray-700/50 hover:border-teal-400 hover:bg-gray-600/50'
                       }`}
                       onClick={() => setSelectedDoctor(doctor.id)}
                     >
-                      <h3 className="font-medium">{doctor.name}</h3>
-                      <p className="text-sm text-gray-500">{doctor.specialty}</p>
+                      <h3 className="font-medium text-white">{doctor.name}</h3>
+                      <p className="text-sm text-gray-300">{doctor.specialty}</p>
                       <div className="flex items-center mt-2 text-yellow-400 text-sm">
                         {'★'.repeat(Math.floor(doctor.rating))}
                         {'☆'.repeat(5 - Math.floor(doctor.rating))}
-                        <span className="text-gray-500 ml-1">({doctor.reviews} reviews)</span>
+                        <span className="text-gray-400 ml-1">({doctor.reviews} reviews)</span>
                       </div>
                     </div>
                   ))
@@ -278,7 +305,7 @@ const AppointmentPage = () => {
             {/* Date and Time Selection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label htmlFor="date" className="block text-gray-700 font-medium mb-2">
+                <label htmlFor="date" className="block text-white font-medium mb-2">
                   Select Date
                 </label>
                 <div className="relative">
@@ -287,7 +314,7 @@ const AppointmentPage = () => {
                   </div>
                   <select
                     id="date"
-                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     disabled={!selectedDoctor}
@@ -303,7 +330,7 @@ const AppointmentPage = () => {
               </div>
               
               <div>
-                <label htmlFor="time" className="block text-gray-700 font-medium mb-2">
+                <label htmlFor="time" className="block text-white font-medium mb-2">
                   Select Time
                 </label>
                 <div className="relative">
@@ -312,7 +339,7 @@ const AppointmentPage = () => {
                   </div>
                   <select
                     id="time"
-                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500"
                     value={selectedTime}
                     onChange={(e) => setSelectedTime(e.target.value)}
                     disabled={!selectedDate}
@@ -330,11 +357,11 @@ const AppointmentPage = () => {
             
             {/* Contact Information */}
             <div className="mb-6">
-              <h3 className="text-lg font-medium mb-4">Your Information</h3>
+              <h3 className="text-lg font-medium text-white mb-4">Your Information</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                 <div>
-                  <label htmlFor="name" className="block text-gray-700 text-sm font-medium mb-1">
+                  <label htmlFor="name" className="block text-white text-sm font-medium mb-1">
                     Full Name
                   </label>
                   <div className="relative">
@@ -347,7 +374,7 @@ const AppointmentPage = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="appearance-none block w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                      className="appearance-none block w-full pl-10 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                       placeholder="John Doe"
                       required
                     />
@@ -355,7 +382,7 @@ const AppointmentPage = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="phone" className="block text-gray-700 text-sm font-medium mb-1">
+                  <label htmlFor="phone" className="block text-white text-sm font-medium mb-1">
                     Phone Number
                   </label>
                   <input
@@ -364,7 +391,7 @@ const AppointmentPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="appearance-none block w-full py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                    className="appearance-none block w-full py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                     placeholder="(123) 456-7890"
                     required
                   />
@@ -372,7 +399,7 @@ const AppointmentPage = () => {
               </div>
               
               <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-1">
+                <label htmlFor="email" className="block text-white text-sm font-medium mb-1">
                   Email Address
                 </label>
                 <input
@@ -381,14 +408,14 @@ const AppointmentPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="appearance-none block w-full py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                  className="appearance-none block w-full py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                   placeholder="your@email.com"
                   required
                 />
               </div>
               
               <div>
-                <label htmlFor="notes" className="block text-gray-700 text-sm font-medium mb-1">
+                <label htmlFor="notes" className="block text-white text-sm font-medium mb-1">
                   Reason for Visit (Optional)
                 </label>
                 <div className="relative">
@@ -401,7 +428,7 @@ const AppointmentPage = () => {
                     value={formData.notes}
                     onChange={handleInputChange}
                     rows={3}
-                    className="appearance-none block w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+                    className="appearance-none block w-full pl-10 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
                     placeholder="Please describe your symptoms or reason for the appointment..."
                   />
                 </div>
@@ -410,20 +437,20 @@ const AppointmentPage = () => {
             
             {/* Appointment Summary */}
             {selectedDoctor && selectedDate && selectedTime && (
-              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-medium mb-2">Appointment Summary</h3>
+              <div className="mb-6 p-4 bg-teal-900/30 backdrop-blur-sm border border-teal-700/50 rounded-lg">
+                <h3 className="font-medium text-white mb-2">Appointment Summary</h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-gray-500">Doctor:</div>
-                  <div>{getDoctor(selectedDoctor)?.name || 'Selected Doctor'}</div>
+                  <div className="text-gray-400">Doctor:</div>
+                  <div className="text-white">{getDoctor(selectedDoctor)?.name || 'Selected Doctor'}</div>
                   
-                  <div className="text-gray-500">Specialty:</div>
-                  <div>{getDoctor(selectedDoctor)?.specialty || 'Specialist'}</div>
+                  <div className="text-gray-400">Specialty:</div>
+                  <div className="text-white">{getDoctor(selectedDoctor)?.specialty || 'Specialist'}</div>
                   
-                  <div className="text-gray-500">Date:</div>
-                  <div>{dateOptions.find(d => d.value === selectedDate)?.label || selectedDate}</div>
+                  <div className="text-gray-400">Date:</div>
+                  <div className="text-white">{dateOptions.find(d => d.value === selectedDate)?.label || selectedDate}</div>
                   
-                  <div className="text-gray-500">Time:</div>
-                  <div>{selectedTime}</div>
+                  <div className="text-gray-400">Time:</div>
+                  <div className="text-white">{selectedTime}</div>
                 </div>
               </div>
             )}
@@ -432,7 +459,7 @@ const AppointmentPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-primary text-white py-3 rounded-md hover:bg-primary-dark transition duration-300 flex justify-center items-center"
+              className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-3 rounded-lg hover:from-teal-700 hover:to-blue-700 transition duration-300 flex justify-center items-center shadow-lg hover:shadow-xl"
             >
               {isSubmitting ? (
                 <>
@@ -446,6 +473,7 @@ const AppointmentPage = () => {
                 'Confirm Appointment'
               )}
             </button>
+            </div>
           </form>
         </div>
       </div>
