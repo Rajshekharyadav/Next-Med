@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
 
 // Import the doctors array to access doctor information
 import { doctors } from '../../../data/doctors';
@@ -64,31 +65,41 @@ export async function POST(request: Request) {
       }
     }
     
-    // Mock response
+    // Store appointment in database
+    const client = await clientPromise;
+    const db = client.db('nextmed');
+    
+    const appointmentRecord = {
+      reference: bookingReference,
+      status: "confirmed",
+      doctorId,
+      slotId,
+      patient: {
+        name,
+        email,
+        phone
+      },
+      notes: notes || "",
+      doctor: {
+        name: doctor.name,
+        specialty: doctor.specialty,
+        imageUrl: doctor.imageUrl
+      },
+      appointmentDetails: {
+        date: appointmentDate,
+        time: appointmentTime,
+        type: "video"
+      },
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    await db.collection('appointments').insertOne(appointmentRecord);
+    
+    // Return response
     return NextResponse.json({
       success: true,
-      booking: {
-        reference: bookingReference,
-        status: "confirmed",
-        doctorId,
-        slotId,
-        patient: {
-          name,
-          email,
-          phone
-        },
-        notes: notes || "",
-        doctor: {
-          name: doctor.name,
-          specialty: doctor.specialty,
-          imageUrl: doctor.imageUrl
-        },
-        appointmentDetails: {
-          date: appointmentDate,
-          time: appointmentTime,
-          type: "video"
-        }
-      },
+      booking: appointmentRecord,
       message: "Your appointment has been successfully booked. A confirmation email has been sent to your email address."
     });
   } catch (error) {

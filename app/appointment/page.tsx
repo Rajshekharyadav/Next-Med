@@ -266,10 +266,13 @@ const AppointmentPage = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-blue-500/10 animate-pulse"></div>
             <div className="relative z-10">
             {/* Doctor Selection */}
-            <div className="mb-6">
-              <label className="block text-white font-medium mb-2">
-                Select Doctor
-              </label>
+            <div className="mb-8">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8H11C9.9 8 9 7.1 9 6V4L3 7V9H21ZM12 8C13.1 8 14 8.9 14 10V22H10V10C10 8.9 10.9 8 12 8Z"/></svg>
+                </div>
+                <h2 className="text-xl font-semibold text-white">Select Your Doctor</h2>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {isLoading ? (
                   <div className="col-span-2 flex justify-center py-8">
@@ -282,19 +285,35 @@ const AppointmentPage = () => {
                   doctors.map((doctor) => (
                     <div
                       key={doctor.id}
-                      className={`border rounded-lg p-4 cursor-pointer transition backdrop-blur-sm ${
+                      className={`border rounded-xl p-6 cursor-pointer transition-all duration-300 backdrop-blur-sm relative overflow-hidden group ${
                         selectedDoctor === doctor.id
-                          ? 'border-teal-500 bg-teal-600/20'
-                          : 'border-gray-600 bg-gray-700/50 hover:border-teal-400 hover:bg-gray-600/50'
+                          ? 'border-teal-400 bg-gradient-to-br from-teal-600/30 to-blue-600/20 shadow-lg shadow-teal-500/20'
+                          : 'border-gray-600/50 bg-gray-700/30 hover:border-teal-400/70 hover:bg-gray-600/40 hover:shadow-lg hover:shadow-teal-500/10'
                       }`}
                       onClick={() => setSelectedDoctor(doctor.id)}
                     >
-                      <h3 className="font-medium text-white">{doctor.name}</h3>
-                      <p className="text-sm text-gray-300">{doctor.specialty}</p>
-                      <div className="flex items-center mt-2 text-yellow-400 text-sm">
-                        {'★'.repeat(Math.floor(doctor.rating))}
-                        {'☆'.repeat(5 - Math.floor(doctor.rating))}
-                        <span className="text-gray-400 ml-1">({doctor.reviews} reviews)</span>
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="relative z-10">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center">
+                            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 4V6C15 7.1 14.1 8 13 8H11C9.9 8 9 7.1 9 6V4L3 7V9H21ZM12 8C13.1 8 14 8.9 14 10V22H10V10C10 8.9 10.9 8 12 8Z"/></svg>
+                          </div>
+                          {selectedDoctor === doctor.id && (
+                            <div className="w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center">
+                              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-white text-lg mb-1">{doctor.name}</h3>
+                        <p className="text-sm text-teal-300 mb-3 font-medium">{doctor.specialty}</p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-yellow-400 text-sm">
+                            {'★'.repeat(Math.floor(doctor.rating))}
+                            {'☆'.repeat(5 - Math.floor(doctor.rating))}
+                            <span className="text-gray-400 ml-2 text-xs">({doctor.reviews})</span>
+                          </div>
+                          <span className="text-xs text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full border border-emerald-400/20">Available</span>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -303,7 +322,14 @@ const AppointmentPage = () => {
             </div>
             
             {/* Date and Time Selection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="mb-8">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                  <FiCalendar className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-semibold text-white">Choose Date & Time</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="date" className="block text-white font-medium mb-2">
                   Select Date
@@ -353,6 +379,7 @@ const AppointmentPage = () => {
                   </select>
                 </div>
               </div>
+            </div>
             </div>
             
             {/* Contact Information */}
@@ -456,23 +483,31 @@ const AppointmentPage = () => {
             )}
             
             {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white py-3 rounded-lg hover:from-teal-700 hover:to-blue-700 transition duration-300 flex justify-center items-center shadow-lg hover:shadow-xl"
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </>
-              ) : (
-                'Confirm Appointment'
-              )}
-            </button>
+            <div className="text-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-teal-600 via-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl hover:from-teal-700 hover:via-blue-700 hover:to-purple-700 transition-all duration-300 flex justify-center items-center shadow-xl hover:shadow-2xl hover:shadow-teal-500/20 transform hover:-translate-y-1 font-semibold text-lg relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10 flex items-center">
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processing Your Appointment...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                      Confirm Appointment
+                    </>
+                  )}
+                </div>
+              </button>
+            </div>
             </div>
           </form>
         </div>
@@ -481,4 +516,4 @@ const AppointmentPage = () => {
   );
 };
 
-export default AppointmentPage; 
+export default AppointmentPage;
