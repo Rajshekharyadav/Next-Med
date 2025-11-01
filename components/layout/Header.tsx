@@ -74,7 +74,14 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <div className="relative h-10 w-40 flex items-center">
-              <span className="text-2xl font-bold text-primary">NextMed</span>
+              <Image 
+                src="/images/logo nextmed.png" 
+                alt="NextMed Logo" 
+                width={180} 
+                height={50} 
+                className="object-contain" 
+                priority
+              />
             </div>
           </Link>
 

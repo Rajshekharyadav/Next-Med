@@ -3,9 +3,22 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/AuthContext';
-import { Loader2, AlertCircle, Check, AlertTriangle, Search, X, Tag, Plus, Clock, ArrowRight, UserRound } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Dynamically import Lucide icons with no SSR to prevent hydration errors
+const Loader2 = dynamic(() => import('lucide-react').then(mod => mod.Loader2), { ssr: false });
+const AlertCircle = dynamic(() => import('lucide-react').then(mod => mod.AlertCircle), { ssr: false });
+const Check = dynamic(() => import('lucide-react').then(mod => mod.Check), { ssr: false });
+const AlertTriangle = dynamic(() => import('lucide-react').then(mod => mod.AlertTriangle), { ssr: false });
+const Search = dynamic(() => import('lucide-react').then(mod => mod.Search), { ssr: false });
+const X = dynamic(() => import('lucide-react').then(mod => mod.X), { ssr: false });
+const Tag = dynamic(() => import('lucide-react').then(mod => mod.Tag), { ssr: false });
+const Plus = dynamic(() => import('lucide-react').then(mod => mod.Plus), { ssr: false });
+const Clock = dynamic(() => import('lucide-react').then(mod => mod.Clock), { ssr: false });
+const ArrowRight = dynamic(() => import('lucide-react').then(mod => mod.ArrowRight), { ssr: false });
+const UserRound = dynamic(() => import('lucide-react').then(mod => mod.UserRound), { ssr: false });
 
 // Categorized symptoms for better organization
 const SYMPTOM_CATEGORIES = {
@@ -178,7 +191,7 @@ export default function AIDiagnosisPage() {
   const filteredSymptoms = getFilteredSymptoms();
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen pb-12">
+    <div className="bg-gradient-to-br from-gray-900 to-blue-900 min-h-screen pb-12">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -187,20 +200,18 @@ export default function AIDiagnosisPage() {
           className="text-center mb-8"
         >
           <div className="flex items-center justify-center mb-4">
-            <img 
-              src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" 
-              alt="Google Gemini Logo" 
-              className="h-10 w-10 mr-3"
-            />
-            <h1 className="text-4xl font-bold text-gray-800">AI Symptom Analysis</h1>
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
+              <img src="/images/logo nextmed.png" alt="NextMed Logo" className="w-6 h-6 object-contain" />
+            </div>
+            <h1 className="text-4xl font-bold text-white">AI Symptom Analysis</h1>
           </div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
             Get instant insights about your health symptoms using Google's advanced Gemini AI technology
           </p>
         </motion.div>
         
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+        <div className="dark-glass-card rounded-xl shadow-xl overflow-hidden backdrop-blur-lg">
+          <div className="bg-gradient-to-r from-blue-600/80 to-blue-700/80 p-6 text-white backdrop-blur-md">
             <div className="flex items-start">
               <div className="mr-6">
                 <h2 className="text-2xl font-bold mb-2">How It Works</h2>
@@ -213,7 +224,7 @@ export default function AIDiagnosisPage() {
           </div>
           
           <div className="p-6 md:p-8">
-            <div className="mb-8 bg-blue-50 rounded-lg p-4 border border-blue-100">
+            <div className="mb-8 bg-blue-900/20 backdrop-blur-sm rounded-lg p-4 border border-blue-500/30">
               <div className="flex items-center">
                 <img 
                   src="https://brandlogo.org/wp-content/uploads/2024/06/Gemini-Icon-300x300.png.webp" 
@@ -221,10 +232,10 @@ export default function AIDiagnosisPage() {
                   className="h-6 w-6 mr-3"
                 />
                 <div>
-                  <p className="text-blue-800 font-medium">
+                  <p className="text-blue-300 font-medium">
                     Powered by Google's Gemini AI - advanced medical symptom analysis
                   </p>
-                  <p className="text-sm text-blue-600 mt-1">
+                  <p className="text-sm text-blue-400 mt-1">
                     For educational purposes only. Not a substitute for professional medical advice.
                     <Link href="/ai-diagnosis/api-info" className="ml-2 underline">
                       Learn more
@@ -251,7 +262,7 @@ export default function AIDiagnosisPage() {
                   <div className="mb-6">
                     <div className="relative mb-2">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-gray-400" />
+                        <Search className="h-5 w-5 text-blue-300" />
                       </div>
                       <input
                         type="text"
@@ -266,7 +277,7 @@ export default function AIDiagnosisPage() {
                             setIsSearching(false);
                           }
                         }}
-                        className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                        className="w-full pl-10 pr-10 py-3 border border-blue-500/30 bg-blue-900/20 backdrop-blur-sm rounded-lg text-white placeholder-blue-300/70 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
                         placeholder="Search for symptoms..."
                       />
                       {searchQuery && (
@@ -278,14 +289,14 @@ export default function AIDiagnosisPage() {
                           }}
                           className="absolute inset-y-0 right-0 pr-3 flex items-center"
                         >
-                          <X className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                          <X className="h-5 w-5 text-blue-300 hover:text-blue-100" />
                         </button>
                       )}
                     </div>
                     
                     {!isSearching && recentSearches.length > 0 && (
                       <div className="mb-4">
-                        <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <div className="flex items-center text-sm text-blue-300 mb-2">
                           <Clock className="h-4 w-4 mr-1" />
                           <span>Recent searches:</span>
                         </div>
@@ -295,10 +306,10 @@ export default function AIDiagnosisPage() {
                               key={term}
                               type="button"
                               onClick={() => handleSymptomToggle(term)}
-                              className={`px-3 py-1 rounded-full text-sm ${
+                              className={`px-3 py-1 rounded-full text-sm backdrop-blur-sm ${
                                 selectedSymptoms.includes(term)
-                                  ? 'bg-primary text-white'
-                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                  ? 'bg-blue-600/70 text-white shadow-lg shadow-blue-500/20'
+                                  : 'bg-blue-900/30 text-blue-100 hover:bg-blue-800/50 border border-blue-500/30'
                               }`}
                             >
                               {term}
@@ -370,8 +381,8 @@ export default function AIDiagnosisPage() {
                               onClick={() => setActiveCategory(category)}
                               className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
                                 activeCategory === category
-                                  ? 'bg-primary text-white font-medium shadow-md'
-                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                  ? 'bg-primary text-white font-medium shadow-lg shadow-blue-500/20'
+                                  : 'bg-blue-900/30 text-blue-100 hover:bg-blue-800/50 border border-blue-500/30 backdrop-blur-sm'
                               }`}
                             >
                               {category}
@@ -380,8 +391,8 @@ export default function AIDiagnosisPage() {
                         </div>
                       </div>
                       
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-gray-700 mb-3">{activeCategory} Symptoms:</h4>
+                      <div className="bg-blue-900/20 backdrop-blur-sm p-4 rounded-lg border border-blue-500/30">
+                        <h4 className="font-medium text-blue-100 mb-3">{activeCategory} Symptoms:</h4>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                           {getActiveCategorySymptoms().map((symptom) => (
                             <motion.div
@@ -390,11 +401,11 @@ export default function AIDiagnosisPage() {
                               whileTap={{ scale: 0.98 }}
                               onClick={() => handleSymptomToggle(symptom)}
                               className={`
-                                cursor-pointer rounded-lg p-3 flex items-center justify-between transition-all
+                                cursor-pointer rounded-lg p-3 flex items-center justify-between transition-all backdrop-blur-sm
                                 ${
                                   selectedSymptoms.includes(symptom)
-                                    ? 'bg-primary text-white shadow-md'
-                                    : 'bg-white border border-gray-200 hover:border-primary hover:shadow-sm text-gray-800'
+                                    ? 'bg-blue-600/70 text-white shadow-lg shadow-blue-500/20'
+                                    : 'bg-blue-900/30 text-blue-100 hover:bg-blue-800/50 border border-blue-500/30'
                                 }
                               `}
                             >
@@ -402,7 +413,7 @@ export default function AIDiagnosisPage() {
                               {selectedSymptoms.includes(symptom) ? (
                                 <Check className="h-5 w-5 flex-shrink-0" />
                               ) : (
-                                <Plus className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                                <Plus className="h-5 w-5 text-blue-300 flex-shrink-0" />
                               )}
                             </motion.div>
                           ))}
@@ -546,10 +557,10 @@ export default function AIDiagnosisPage() {
                   whileTap={{ scale: 0.98 }}
                   className={`
                     w-full flex items-center justify-center p-4 rounded-lg font-medium
-                    transition-all ${
+                    transition-all dark-glass-button ${
                       selectedSymptoms.length === 0
-                        ? 'bg-gray-300 cursor-not-allowed text-gray-500'
-                        : 'bg-primary text-white hover:bg-blue-600 shadow-lg hover:shadow-xl'
+                        ? 'bg-gray-300/50 cursor-not-allowed text-gray-400'
+                        : 'text-white hover:shadow-lg hover:shadow-blue-500/20'
                     }
                   `}
                 >
@@ -580,22 +591,22 @@ export default function AIDiagnosisPage() {
                       alt="Google Gemini Logo" 
                       className="h-6 w-6 mr-2"
                     />
-                    <h2 className="text-2xl font-bold text-gray-800">Analysis Results</h2>
+                    <h2 className="text-2xl font-bold text-white">Analysis Results</h2>
                   </div>
                   <button
                     onClick={resetForm}
-                    className="bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 px-4 py-2 rounded-lg transition-colors flex items-center"
+                    className="bg-blue-900/30 backdrop-blur-sm border border-blue-500/30 hover:bg-blue-800/50 text-blue-100 px-4 py-2 rounded-lg transition-colors flex items-center"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     New Analysis
                   </button>
                 </div>
 
-                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                <div className="mb-6 p-4 bg-blue-900/40 backdrop-blur-sm border border-blue-500/30 rounded-lg">
                   <div className="flex items-start">
-                    <AlertTriangle className="text-amber-500 mr-3 h-6 w-6 flex-shrink-0 mt-1" />
-                    <p className="text-amber-800">
-                      <span className="font-bold block mb-1">Important Disclaimer:</span>
+                    <AlertTriangle className="text-amber-400 mr-3 h-6 w-6 flex-shrink-0 mt-1" />
+                    <p className="text-blue-100">
+                      <span className="font-bold block mb-1 text-amber-300">Important Disclaimer:</span>
                       {diagnosisResult.prediction.disclaimer || 
                         "This analysis is for informational purposes only and does not constitute medical advice or diagnosis. Always consult with qualified healthcare professionals for proper medical advice, diagnosis, and treatment."}
                     </p>
@@ -705,4 +716,4 @@ export default function AIDiagnosisPage() {
       </div>
     </div>
   );
-} 
+}
