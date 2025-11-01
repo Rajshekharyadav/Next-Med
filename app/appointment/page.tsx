@@ -330,86 +330,94 @@ const AppointmentPage = () => {
                 <h2 className="text-xl font-semibold text-white">Choose Date & Time</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="date" className="block text-white font-medium mb-2">
-                  Select Date
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiCalendar className="text-gray-400" />
-                  </div>
-                  <select
-                    id="date"
-                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500"
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    disabled={!selectedDoctor}
-                  >
-                    <option value="">Select a date</option>
-                    {dateOptions.map((date) => (
-                      <option key={date.value} value={date.value}>
-                        {date.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="time" className="block text-white font-medium mb-2">
-                  Select Time
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiClock className="text-gray-400" />
-                  </div>
-                  <select
-                    id="time"
-                    className="appearance-none block w-full pl-10 pr-8 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500"
-                    value={selectedTime}
-                    onChange={(e) => setSelectedTime(e.target.value)}
-                    disabled={!selectedDate}
-                  >
-                    <option value="">Select a time</option>
-                    {timeSlots.map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            </div>
-            
-            {/* Contact Information */}
-            <div className="mb-6">
-              <h3 className="text-lg font-medium text-white mb-4">Your Information</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                <div>
-                  <label htmlFor="name" className="block text-white text-sm font-medium mb-1">
-                    Full Name
+                <div className="bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                  <label htmlFor="date" className="block text-white font-medium mb-3 flex items-center">
+                    <FiCalendar className="w-4 h-4 mr-2 text-teal-400" />
+                    Select Date
                   </label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiUser className="text-gray-400" />
+                    <select
+                      id="date"
+                      className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      disabled={!selectedDoctor}
+                    >
+                      <option value="">Choose your preferred date</option>
+                      {dateOptions.map((date) => (
+                        <option key={date.value} value={date.value}>
+                          {date.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
                     </div>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="appearance-none block w-full pl-10 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                      placeholder="John Doe"
-                      required
-                    />
                   </div>
                 </div>
                 
-                <div>
-                  <label htmlFor="phone" className="block text-white text-sm font-medium mb-1">
+                <div className="bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                  <label htmlFor="time" className="block text-white font-medium mb-3 flex items-center">
+                    <FiClock className="w-4 h-4 mr-2 text-blue-400" />
+                    Select Time
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="time"
+                      className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-300"
+                      value={selectedTime}
+                      onChange={(e) => setSelectedTime(e.target.value)}
+                      disabled={!selectedDate}
+                    >
+                      <option value="">Choose your preferred time</option>
+                      {timeSlots.map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Contact Information */}
+            <div className="mb-8">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mr-3">
+                  <FiUser className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-semibold text-white">Your Information</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                  <label htmlFor="name" className="block text-white text-sm font-medium mb-3 flex items-center">
+                    <FiUser className="w-4 h-4 mr-2 text-purple-400" />
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-all duration-300"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+                
+                <div className="bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                  <label htmlFor="phone" className="block text-white text-sm font-medium mb-3 flex items-center">
+                    <svg className="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/></svg>
                     Phone Number
                   </label>
                   <input
@@ -418,15 +426,16 @@ const AppointmentPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="appearance-none block w-full py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                    className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-all duration-300"
                     placeholder="(123) 456-7890"
                     required
                   />
                 </div>
               </div>
               
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-white text-sm font-medium mb-1">
+              <div className="mb-6 bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                <label htmlFor="email" className="block text-white text-sm font-medium mb-3 flex items-center">
+                  <svg className="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/></svg>
                   Email Address
                 </label>
                 <input
@@ -435,49 +444,52 @@ const AppointmentPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="appearance-none block w-full py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                  className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-all duration-300"
                   placeholder="your@email.com"
                   required
                 />
               </div>
               
-              <div>
-                <label htmlFor="notes" className="block text-white text-sm font-medium mb-1">
-                  Reason for Visit (Optional)
+              <div className="bg-gray-700/30 backdrop-blur-sm rounded-xl p-4 border border-gray-600/40 hover:border-gray-500/60 transition-all duration-300">
+                <label htmlFor="notes" className="block text-white text-sm font-medium mb-3 flex items-center">
+                  <FiMessageSquare className="w-4 h-4 mr-2 text-yellow-400" />
+                  Reason for Visit <span className="text-gray-400 text-xs ml-1">(Optional)</span>
                 </label>
-                <div className="relative">
-                  <div className="absolute top-3 left-3 flex items-start pointer-events-none">
-                    <FiMessageSquare className="text-gray-400" />
-                  </div>
-                  <textarea
-                    id="notes"
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="appearance-none block w-full pl-10 py-2 border border-gray-600 bg-gray-700/80 text-white rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                    placeholder="Please describe your symptoms or reason for the appointment..."
-                  />
-                </div>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="appearance-none block w-full px-4 py-3 border border-gray-600/50 bg-gray-800/50 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-all duration-300 resize-none"
+                  placeholder="Please describe your symptoms or reason for the appointment..."
+                />
               </div>
             </div>
             
             {/* Appointment Summary */}
             {selectedDoctor && selectedDate && selectedTime && (
-              <div className="mb-6 p-4 bg-teal-900/30 backdrop-blur-sm border border-teal-700/50 rounded-lg">
-                <h3 className="font-medium text-white mb-2">Appointment Summary</h3>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-gray-400">Doctor:</div>
-                  <div className="text-white">{getDoctor(selectedDoctor)?.name || 'Selected Doctor'}</div>
-                  
-                  <div className="text-gray-400">Specialty:</div>
-                  <div className="text-white">{getDoctor(selectedDoctor)?.specialty || 'Specialist'}</div>
-                  
-                  <div className="text-gray-400">Date:</div>
-                  <div className="text-white">{dateOptions.find(d => d.value === selectedDate)?.label || selectedDate}</div>
-                  
-                  <div className="text-gray-400">Time:</div>
-                  <div className="text-white">{selectedTime}</div>
+              <div className="mb-8 p-6 bg-gradient-to-r from-teal-900/40 to-blue-900/40 backdrop-blur-sm border border-teal-500/30 rounded-xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-blue-500/10 animate-pulse"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center mb-4">
+                    <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
+                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">Appointment Summary</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-800/30 rounded-lg p-3">
+                      <div className="text-gray-400 text-xs uppercase tracking-wide mb-1">Doctor</div>
+                      <div className="text-white font-medium">{getDoctor(selectedDoctor)?.name || 'Selected Doctor'}</div>
+                      <div className="text-teal-300 text-sm">{getDoctor(selectedDoctor)?.specialty || 'Specialist'}</div>
+                    </div>
+                    <div className="bg-gray-800/30 rounded-lg p-3">
+                      <div className="text-gray-400 text-xs uppercase tracking-wide mb-1">Date & Time</div>
+                      <div className="text-white font-medium">{dateOptions.find(d => d.value === selectedDate)?.label || selectedDate}</div>
+                      <div className="text-blue-300 text-sm">{selectedTime}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
