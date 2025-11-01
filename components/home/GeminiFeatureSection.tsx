@@ -43,7 +43,7 @@ const analyzeAnimation = {
 
 const GeminiFeatureSection = () => {
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden overflow-x-hidden modern-bg">
       {/* Background elements */}
       <motion.div 
         className="absolute -top-20 -right-20 w-64 h-64 bg-blue-200/40 rounded-full blur-3xl"
@@ -72,7 +72,7 @@ const GeminiFeatureSection = () => {
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12 glass-effect p-8 mx-auto">
           {/* Left Column: Text and CTA */}
           <div className="md:w-1/2">
             <motion.div
@@ -150,7 +150,7 @@ const GeminiFeatureSection = () => {
                 }}
               >
                 <motion.div 
-                  className="flex items-start p-3 rounded-lg hover:bg-blue-50/50 transition-colors"
+                  className="glass-card p-3 mb-3"
                   custom={1}
                   variants={featureVariants}
                   whileHover={{ x: 5 }}
@@ -168,7 +168,7 @@ const GeminiFeatureSection = () => {
                 </motion.div>
                 
                 <motion.div 
-                  className="flex items-start p-3 rounded-lg hover:bg-blue-50/50 transition-colors"
+                  className="glass-card p-3 mb-3"
                   custom={2}
                   variants={featureVariants}
                   whileHover={{ x: 5 }}
@@ -186,7 +186,7 @@ const GeminiFeatureSection = () => {
                 </motion.div>
                 
                 <motion.div 
-                  className="flex items-start p-3 rounded-lg hover:bg-blue-50/50 transition-colors"
+                  className="glass-card p-3 mb-3"
                   custom={3}
                   variants={featureVariants}
                   whileHover={{ x: 5 }}
@@ -204,7 +204,7 @@ const GeminiFeatureSection = () => {
                 </motion.div>
                 
                 <motion.div 
-                  className="flex items-start p-3 rounded-lg hover:bg-blue-50/50 transition-colors"
+                  className="glass-card p-3 mb-3"
                   custom={4}
                   variants={featureVariants}
                   whileHover={{ x: 5 }}
@@ -447,4 +447,4 @@ const GeminiFeatureSection = () => {
   );
 };
 
-export default GeminiFeatureSection; 
+export default GeminiFeatureSection;

@@ -1,24 +1,58 @@
 "use client";
 
-import FeaturesSection from '@/components/home/FeaturesSection';
-import TestimonialsSection from '@/components/home/TestimonialsSection';
-import CTASection from '@/components/home/CTASection';
-import AIDiagnosticsSection from '@/components/home/AIDiagnosticsSection';
-import HealthRecordsSection from '@/components/home/HealthRecordsSection';
-import DoctorsSectionEnhanced from '@/components/home/DoctorsSectionEnhanced';
-import GeminiFeatureSection from '@/components/home/GeminiFeatureSection';
-import BloodReportFeatureSection from '@/components/home/BloodReportFeatureSection';
-import SkinVisionFeatureSection from '@/components/home/SkinVisionFeatureSection';
-import HomeHero from '@/components/home/HomeHero';
-import TrustedBySection from '@/components/home/TrustedBySection';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import AnimatedSection from '@/components/home/AnimatedSection';
-import AnimatedFooter from '@/components/home/AnimatedFooter';
-import HealthBenefitsSection from '@/components/home/HealthBenefitsSection';
-import { ArcadeEmbed } from '@/components/home/ArcadeEmbed';
 
-// Enhanced 3D Components
+// Import lightweight components directly
 import SimpleEnhanced3DHero from '@/components/home/SimpleEnhanced3DHero';
-import EnhancedFeatures from '@/components/home/EnhancedFeatures';
+import HealthBenefitsSection from '@/components/home/HealthBenefitsSection';
+
+// Lazy load heavier components
+const ArcadeEmbed = dynamic(() => import('@/components/home/ArcadeEmbed').then(mod => ({ default: mod.ArcadeEmbed })), { 
+  ssr: false,
+  loading: () => <div className="w-full h-96 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const EnhancedFeatures = dynamic(() => import('@/components/home/EnhancedFeatures'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const SkinVisionFeatureSection = dynamic(() => import('@/components/home/SkinVisionFeatureSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const GeminiFeatureSection = dynamic(() => import('@/components/home/GeminiFeatureSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const BloodReportFeatureSection = dynamic(() => import('@/components/home/BloodReportFeatureSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const AIDiagnosticsSection = dynamic(() => import('@/components/home/AIDiagnosticsSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const HealthRecordsSection = dynamic(() => import('@/components/home/HealthRecordsSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const DoctorsSectionEnhanced = dynamic(() => import('@/components/home/DoctorsSectionEnhanced'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const CTASection = dynamic(() => import('@/components/home/CTASection'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
+
+const AnimatedFooter = dynamic(() => import('@/components/home/AnimatedFooter'), { 
+  loading: () => <div className="w-full h-64 bg-gray-800/50 animate-pulse rounded-xl"></div>
+});
 
 export default function Home() {
   return (
@@ -29,17 +63,9 @@ export default function Home() {
         
         {/* Arcade Demo Section */}
         <AnimatedSection>
-          <div className="py-16 px-4">
+          <div className="">
             <div className="container mx-auto max-w-6xl">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  See NextMed in Action
-                </h2>
-                <p className="text-white/80 max-w-2xl mx-auto">
-                  Watch our interactive demo to see how easy it is to use AI diagnosis and book doctor appointments
-                </p>
-              </div>
-              <div className="bg-black/30 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+              <div className="bg-black/30 backdrop-blur-md  p-6 border border-white/10">
                 <ArcadeEmbed />
               </div>
             </div>
@@ -72,12 +98,7 @@ export default function Home() {
           </AnimatedSection>
         )}
 
-        {/* AI Diagnostics Section */}
-        {typeof AIDiagnosticsSection === 'function' && (
-          <AnimatedSection delay={0.3}>
-            <AIDiagnosticsSection />
-          </AnimatedSection>
-        )}
+        {/* AI Diagnostics Section - Removed as requested */}
 
         {/* Health Records Section */}
         {typeof HealthRecordsSection === 'function' && (
@@ -86,15 +107,9 @@ export default function Home() {
           </AnimatedSection>
         )}
 
-        {/* Doctor Consultations Section */}
-        {typeof DoctorsSectionEnhanced === 'function' && (
-          <AnimatedSection delay={0.5}>
-            <DoctorsSectionEnhanced />
-          </AnimatedSection>
-        )}
+        {/* Doctors Section - Removed as requested */}
 
-        {/* Enhanced Features Section */}
-        <EnhancedFeatures />
+        {/* Enhanced Features Section - Removed as requested */}
 
         {/* Testimonials Section */}
         {typeof TestimonialsSection === 'function' && (
@@ -114,4 +129,4 @@ export default function Home() {
       <AnimatedFooter />
     </div>
   );
-} 
+}

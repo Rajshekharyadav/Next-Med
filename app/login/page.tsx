@@ -62,34 +62,34 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 dark-glass-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
         <div>
-          <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">NextMed</h1>
-          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Sign in to your account</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <h1 className="mt-6 text-center text-3xl font-extrabold text-white">NextMed</h1>
+          <h2 className="mt-6 text-center text-2xl font-bold text-white">Sign in to your account</h2>
+          <p className="mt-2 text-center text-sm text-gray-300">
             Or{' '}
-            <Link href="/signup" className="font-medium text-primary hover:text-primary-dark">
+            <Link href="/signup" className="font-medium text-blue-400 hover:text-blue-300">
               create a new account
             </Link>
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+          <div className="bg-red-900/30 border-l-4 border-red-700 p-4 mb-4">
             <div className="flex">
               <div className="flex-shrink-0">
                 <FiAlertCircle className="h-5 w-5 text-red-500" />
               </div>
               <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-red-300">{error}</p>
               </div>
             </div>
           </div>
         )}
 
         {successMessage && (
-          <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+          <div className="bg-green-900/30 border-l-4 border-green-700 p-4 mb-4">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -97,7 +97,7 @@ function LoginContent() {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-green-700">{successMessage}</p>
+                <p className="text-sm text-green-300">{successMessage}</p>
               </div>
             </div>
           </div>
@@ -119,7 +119,7 @@ function LoginContent() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-t-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
               </div>
@@ -138,7 +138,7 @@ function LoginContent() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 pl-10 border border-gray-700 bg-gray-800/50 text-white rounded-b-md focus:outline-none focus:ring-blue-400 focus:border-blue-400 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
               </div>
@@ -151,15 +151,15 @@ function LoginContent() {
                 id="remember_me"
                 name="remember_me"
                 type="checkbox"
-                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-700 rounded bg-gray-800/50"
               />
-              <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="remember_me" className="ml-2 block text-sm text-white">
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-primary hover:text-primary-dark">
+              <a href="#" className="font-medium text-blue-400 hover:text-blue-300">
                 Forgot your password?
               </a>
             </div>
@@ -169,7 +169,7 @@ function LoginContent() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white dark-glass-button focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
             >
               {isLoading ? (
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -193,7 +193,9 @@ export default function LoginPage() {
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     }>
-      <LoginContent />
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <LoginContent />
+      </div>
     </Suspense>
   );
 }

@@ -68,8 +68,8 @@ const Header = () => {
   ];
 
   return (
-    <header className={`bg-white ${isScrolled ? 'shadow-md' : ''} sticky top-0 z-50 transition-all duration-300`}>
-      <div className="container mx-auto px-4 py-3">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 mx-4 mt-4`}>
+      <div className={`container mx-auto px-4 py-3 backdrop-blur-md bg-white/70 rounded-2xl ${isScrolled ? 'shadow-lg' : 'shadow-md'} transition-all duration-300`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -318,4 +318,4 @@ const Header = () => {
   );
 };
 
-export default Header; 
+export default Header;

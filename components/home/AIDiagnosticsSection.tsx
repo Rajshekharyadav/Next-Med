@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaUpload, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 
@@ -193,8 +194,8 @@ const AIDiagnosticsSection = () => {
   };
 
   return (
-    <section id="ai-diagnostics" className="py-16 bg-white">
-      <div className="container mx-auto px-4">
+    <section id="ai-diagnostics" className="py-16 modern-bg overflow-x-hidden">
+      <div className="container mx-auto px-4 overflow-x-hidden">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -217,13 +218,16 @@ const AIDiagnosticsSection = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-blue-50 border border-blue-200 p-4 rounded-lg inline-block mx-auto"
+            className="glass-effect p-4 inline-block mx-auto"
           >
             <div className="flex items-center justify-center">
-              <img 
+              <Image 
                 src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-advanced.max-1200x1200.jpg" 
                 alt="Google Gemini Logo" 
-                className="h-6 w-6 mr-3"
+                width={24}
+                height={24}
+                className="mr-3"
+                priority
               />
               <span className="font-medium text-blue-800">New!</span>
               <span className="mx-2 text-gray-700">Try our advanced</span>
@@ -246,7 +250,7 @@ const AIDiagnosticsSection = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="glass-card overflow-hidden"
           >
             <div className="h-48 bg-gradient-to-r from-blue-400 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
               Skin Vision
@@ -382,7 +386,7 @@ const AIDiagnosticsSection = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="glass-card overflow-hidden"
           >
             <div className="h-48 bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
               Blood Report Analysis
@@ -503,7 +507,7 @@ const AIDiagnosticsSection = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-white rounded-lg shadow-md overflow-hidden"
+            className="glass-card overflow-hidden"
           >
             <div className="h-48 bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white text-xl font-bold">
               AI Diagnosis
@@ -628,4 +632,4 @@ const AIDiagnosticsSection = () => {
   );
 };
 
-export default AIDiagnosticsSection; 
+export default AIDiagnosticsSection;

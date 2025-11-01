@@ -1,13 +1,14 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FiCamera, FiShield, FiClock, FiCheckCircle } from 'react-icons/fi';
 
 const SkinVisionFeatureSection = () => {
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section className="py-20 relative overflow-hidden overflow-x-hidden modern-bg">
+      <div className="container mx-auto px-4 overflow-x-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -16,7 +17,7 @@ const SkinVisionFeatureSection = () => {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <div className="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-medium">
+            <div className="inline-block glass-button text-blue-700 px-4 py-1 rounded-full text-sm font-medium">
               NEW FEATURE
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white">
@@ -88,10 +89,14 @@ const SkinVisionFeatureSection = () => {
           >
             <div className="relative">
               {/* Main image */}
-              <img 
+              <Image 
                 src="https://img.freepik.com/premium-photo/beautiful-woman-with-vitiligo-skin-posing-studio-concept-about-body-positivity-self-acceptance_186382-20138.jpg?w=996" 
                 alt="Skin Analysis with AI" 
-                className="w-full h-auto object-cover rounded-t-xl"
+                width={600}
+                height={400}
+                className="w-full object-cover rounded-t-xl"
+                priority
+                loading="eager"
               />
               
               {/* Overlay with demo analysis */}
@@ -148,4 +153,4 @@ const SkinVisionFeatureSection = () => {
   );
 };
 
-export default SkinVisionFeatureSection; 
+export default SkinVisionFeatureSection;

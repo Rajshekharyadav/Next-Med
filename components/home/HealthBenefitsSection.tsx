@@ -133,8 +133,14 @@ const HealthBenefitsSection = () => {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section className="py-24 relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse-slow animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-500/5 rounded-full filter blur-3xl animate-pulse-slow animation-delay-1000"></div>
+      </div>
+      <div className="container mx-auto px-4 overflow-x-hidden relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div 
             initial={{ scale: 0, opacity: 0 }} 
@@ -143,27 +149,33 @@ const HealthBenefitsSection = () => {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="mb-4 inline-block"
           >
-            <span className="inline-block py-1.5 px-5 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 rounded-full text-sm font-semibold border border-indigo-200/50 shadow-sm">
+            <span className="inline-block py-1.5 px-5 dark-glass-button text-white rounded-full text-sm font-semibold shadow-lg">
               Why Choose NextMed
             </span>
           </motion.div>
           
           <motion.h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight tracking-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight tracking-tight text-shadow-glow"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.6 }}
+            style={{
+              textShadow: '0 0 15px rgba(78, 78, 231, 0.5)'
+            }}
           >
-            Transform Your Healthcare Experience with <span className="bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent">Advanced Benefits</span>
+            Transform Your Healthcare Experience with <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Advanced Benefits</span>
           </motion.h2>
           
           <motion.p 
-            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
+            style={{
+              textShadow: '0 0 5px rgba(255, 255, 255, 0.3)'
+            }}
           >
             Our AI-powered healthcare platform delivers personalized care, real-time insights, and seamless experiences to revolutionize how you manage your health.
           </motion.p>
@@ -176,9 +188,9 @@ const HealthBenefitsSection = () => {
             return (
               <motion.div
                 key={cardIndex}
-                className={`relative p-8 rounded-3xl transition-all duration-500 ${
+                className={`relative p-8 transition-all duration-500 ${
                   isCenter 
-                    ? 'bg-black/40 backdrop-blur-md text-white shadow-2xl scale-110 z-10 border border-white/20' 
+                    ? 'dark-glass-card text-white shadow-2xl scale-110 z-10' 
                     : 'bg-black/20 backdrop-blur-sm text-white/60 scale-95 opacity-50 blur-sm border border-white/10'
                 } w-80 h-64 flex flex-col justify-center`}
                 initial={{ opacity: 0, y: 50 }}
@@ -224,7 +236,7 @@ const HealthBenefitsSection = () => {
         <div className="flex justify-center gap-4 mb-12">
           <motion.button
             onClick={prevCard}
-            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-12 h-12 dark-glass-button text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -235,7 +247,7 @@ const HealthBenefitsSection = () => {
           
           <motion.button
             onClick={nextCard}
-            className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-12 h-12 dark-glass-button text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -246,7 +258,7 @@ const HealthBenefitsSection = () => {
         </div>
         
         <motion.div 
-          className="mt-24 text-center bg-black/30 backdrop-blur-md p-10 rounded-2xl shadow-sm border border-white/10 max-w-4xl mx-auto relative overflow-hidden"
+          className="mt-24 text-center dark-glass p-10 max-w-4xl mx-auto relative overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -270,7 +282,7 @@ const HealthBenefitsSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a 
                 href="/about" 
-                className="inline-flex items-center px-6 py-3.5 bg-white/10 backdrop-blur-md text-white rounded-lg shadow-lg border border-white/20 hover:bg-white/20 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3.5 dark-glass-button text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -282,7 +294,7 @@ const HealthBenefitsSection = () => {
               
               <motion.a 
                 href="/demo" 
-                className="inline-flex items-center px-6 py-3.5 bg-black/20 backdrop-blur-md text-white border border-white/20 rounded-lg shadow-sm hover:bg-black/30 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3.5 dark-glass-button text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -300,4 +312,4 @@ const HealthBenefitsSection = () => {
   );
 };
 
-export default HealthBenefitsSection; 
+export default HealthBenefitsSection;

@@ -15,16 +15,19 @@ const fadeIn = {
 const SimpleEnhanced3DHero = () => {
   return (
     <section className="relative py-20 overflow-hidden">
-      {/* Background Video */}
+      {/* Background Video - Optimized with lazy loading */}
       <video 
         autoPlay 
         muted 
         loop 
         playsInline
+        preload="none"
+        loading="lazy"
         className="absolute inset-0 w-full h-full object-cover z-0"
+        poster="/video-poster.jpg" /* Add a static poster image */
       >
-        <source src="/background video.mp4" type="video/mp4" />
-        <source src="/background video.webm" type="video/webm" />
+        <source src="/background video.mp4" type="video/mp4" media="all and (min-width: 768px)" />
+        <source src="/background video-mobile.mp4" type="video/mp4" media="all and (max-width: 767px)" />
       </video>
       
       {/* Dark overlay for better text readability */}

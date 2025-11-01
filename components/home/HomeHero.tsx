@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 // Animation variants
@@ -137,10 +138,13 @@ const HomeHero = () => {
               <motion.div variants={fadeIn}>
                 <Link href="/ai-diagnosis" className="group bg-white hover:bg-gray-50 text-primary border border-primary px-6 py-3.5 rounded-md font-medium transition-colors flex items-center justify-center relative overflow-hidden shadow-md">
                   <span className="absolute inset-0 w-0 bg-gradient-to-r from-indigo-500 to-blue-500 transition-all duration-300 group-hover:w-full opacity-10"></span>
-                  <img 
+                  <Image 
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" 
                     alt="Gemini AI" 
-                    className="h-5 w-5 mr-2 rounded-full group-hover:scale-110 transition-transform"
+                    width={20}
+                    height={20}
+                    className="mr-2 rounded-full group-hover:scale-110 transition-transform"
+                    priority
                   />
                   AI Symptom Analysis
                 </Link>
@@ -332,4 +336,4 @@ const HomeHero = () => {
   );
 };
 
-export default HomeHero; 
+export default HomeHero;

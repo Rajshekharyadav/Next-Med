@@ -59,11 +59,11 @@ export default function DoctorsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900">
       {/* Hero Section */}
-      <div className="bg-primary text-white py-16">
+      <div className="dark-glass py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Doctors</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">Our Doctors</h1>
           <p className="text-xl text-white/90 max-w-2xl">
             Meet our team of experienced and dedicated healthcare professionals.
           </p>
@@ -72,15 +72,15 @@ export default function DoctorsPage() {
 
       {/* Search and Filter Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="dark-glass-card p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label htmlFor="specialty" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="specialty" className="block text-sm font-medium text-white mb-1">
                 Specialty
               </label>
               <select
                 id="specialty"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-700 bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               >
                 <option value="">All Specialties</option>
                 <option value="cardiology">Cardiology</option>
@@ -92,12 +92,12 @@ export default function DoctorsPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="availability" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="availability" className="block text-sm font-medium text-white mb-1">
                 Availability
               </label>
               <select
                 id="availability"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-700 bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               >
                 <option value="">All</option>
                 <option value="available">Available Now</option>
@@ -105,12 +105,12 @@ export default function DoctorsPage() {
               </select>
             </div>
             <div>
-              <label htmlFor="rating" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="rating" className="block text-sm font-medium text-white mb-1">
                 Minimum Rating
               </label>
               <select
                 id="rating"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-700 bg-gray-800/50 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
               >
                 <option value="">Any Rating</option>
                 <option value="4.5">4.5+ Stars</option>
@@ -124,11 +124,11 @@ export default function DoctorsPage() {
         {/* Doctors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {doctors.map((doctor) => (
-            <div key={doctor.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={doctor.id} className="dark-glass-card overflow-hidden">
               <div className="aspect-w-16 aspect-h-9 bg-gray-200 relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-500/20"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <svg className="w-24 h-24 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-24 h-24 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
@@ -136,8 +136,8 @@ export default function DoctorsPage() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-900">{doctor.name}</h3>
-                    <p className="text-primary font-medium">{doctor.specialty}</p>
+                    <h3 className="text-xl font-semibold text-white">{doctor.name}</h3>
+                    <p className="text-blue-400 font-medium">{doctor.specialty}</p>
                   </div>
                   <div className="flex items-center">
                     <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -146,7 +146,7 @@ export default function DoctorsPage() {
                     <span className="ml-1 text-gray-600">{doctor.rating}</span>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-4">{doctor.experience} of experience</p>
+                <p className="text-gray-300 mb-4">{doctor.experience} of experience</p>
                 <div className="flex items-center justify-between">
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                     doctor.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
@@ -155,7 +155,7 @@ export default function DoctorsPage() {
                   </span>
                   <Link
                     href={`/appointment?doctor=${doctor.id}`}
-                    className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors"
+                    className="dark-glass-button text-white px-4 py-2 rounded-md transition-colors"
                   >
                     Book Appointment
                   </Link>
@@ -167,4 +167,4 @@ export default function DoctorsPage() {
       </div>
     </div>
   );
-} 
+}
